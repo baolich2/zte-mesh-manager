@@ -1,0 +1,4 @@
+#Sat Nov 21 11:44:04 ICT 2026
+base.0=D\:\\AndroidProjects\\ZTEMeshManager-v0.4.1-login-challenge-fix\\ZTEMeshManager\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeProjectDexDebugAndroidTest\\0\\classes.dex
+path.0=0/classes.dex
+renamed.0=classes.dex

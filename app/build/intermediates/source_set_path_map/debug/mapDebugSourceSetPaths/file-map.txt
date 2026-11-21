@@ -1,0 +1,7 @@
+com.example.ztemeshmanager.app-pngs-0 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\generated\res\pngs\debug
+com.example.ztemeshmanager.app-resValues-1 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\generated\res\resValues\debug
+com.example.ztemeshmanager.app-packageDebugResources-2 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.example.ztemeshmanager.app-packageDebugResources-3 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.example.ztemeshmanager.app-debug-4 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.example.ztemeshmanager.app-debug-5 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\debug\res
+com.example.ztemeshmanager.app-main-6 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\res

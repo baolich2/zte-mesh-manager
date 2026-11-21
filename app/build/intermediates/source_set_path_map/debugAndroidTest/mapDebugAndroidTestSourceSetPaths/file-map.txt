@@ -1,0 +1,4 @@
+com.example.ztemeshmanager.test.app-androidTest-0 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\generated\res\resValues\androidTest\debug
+com.example.ztemeshmanager.test.app-mergeDebugAndroidTestResources-1 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.example.ztemeshmanager.test.app-mergeDebugAndroidTestResources-2 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.example.ztemeshmanager.test.app-debugAndroidTest-3 D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

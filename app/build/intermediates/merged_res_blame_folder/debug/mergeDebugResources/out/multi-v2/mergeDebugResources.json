@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.example.ztemeshmanager.app-debug-4:/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\AndroidProjects\\ZTEMeshManager-v0.4.1-login-challenge-fix\\ZTEMeshManager\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "56",
+                        "endOffsets": "107"
+                    }
+                }
+            ]
+        }
+    ]
+}
