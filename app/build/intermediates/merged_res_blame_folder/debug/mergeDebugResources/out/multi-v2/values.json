@@ -4,7 +4,7 @@
             "outputFile": "com.example.ztemeshmanager.app-mergeDebugResources-2:/values/values.xml",
             "map": [
                 {
-                    "source": "D:\\AndroidProjects\\ZTEMeshManager-v0.4.1-login-challenge-fix\\ZTEMeshManager\\app\\src\\main\\res\\values\\colors.xml",
+                    "source": "D:\\AndroidProjects\\ZTEMeshManager-v0.5.2\\work_v042\\app\\src\\main\\res\\values\\colors.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

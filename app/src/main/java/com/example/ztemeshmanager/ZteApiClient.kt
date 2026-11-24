@@ -9,6 +9,8 @@ import java.net.CookiePolicy
 import java.net.HttpCookie
 import java.net.HttpURLConnection
 import java.net.URL
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserFactory
 import java.net.URLEncoder
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -109,8 +111,26 @@ class ZteApiClient(private val baseUrl: String) {
                 appendNodeDetail(detail, ap, clients, perNode)
             }
         }
+        // The reference Linux client supplements topology popup data with independent
+        // WLAN/LAN inventories. Those endpoints return ZTE XML Instance/ParaName/ParaValue.
+        val inventory = readLegacyInventory()
+        val controllerMac = controller?.optString("MacAddr").orEmpty()
+        val seen = HashSet<String>()
+        for (i in 0 until clients.length()) seen.add(normalizeMac(clients.optJSONObject(i)?.optString("mac").orEmpty()))
+        for (i in 0 until inventory.length()) {
+            val device = inventory.optJSONObject(i) ?: continue
+            val mac = normalizeMac(device.optString("mac"))
+            if (mac.isBlank() || !seen.add(mac)) continue
+            // Like the Linux reference implementation, use Controller as a clearly
+            // marked fallback when the legacy inventory does not expose a parent node.
+            device.put("upstream", controller?.optString("DeviceName").orEmpty().ifBlank { "Controller (chưa xác định Node)" })
+            device.put("upstreamMac", controllerMac)
+            device.put("association", "fallback-controller")
+            clients.put(device)
+        }
         return JSONObject().put("url", baseUrl).put("capturedAt", System.currentTimeMillis())
-            .put("aps", aps).put("clients", clients).put("perNode", perNode)
+            .put("controllerMac", controllerMac).put("aps", aps).put("clients", clients).put("perNode", perNode)
+            .put("inventory", JSONObject().put("wlan", inventoryCount(inventory, "Wi-Fi")).put("lan", inventoryCount(inventory, "LAN")))
             .put("topology", topology)
     }
 
@@ -130,6 +150,7 @@ class ZteApiClient(private val baseUrl: String) {
             .put("channel24", o.optString("Channel0"))
             .put("channel5", o.optString("Channel1"))
             .put("software", o.optString("SoftwareVer"))
+            .put("macKey", normalizeMac(o.optString("MacAddr")))
     }
 
     private fun readNode(mac: String): JSONObject {
@@ -160,9 +181,8 @@ class ZteApiClient(private val baseUrl: String) {
         val nodeClients = JSONArray()
         val groups = listOf(Triple("wlan2G", "2.4GHz", "Wi-Fi"), Triple("wlan5G", "5GHz", "Wi-Fi"), Triple("lan", "LAN", "LAN"))
         for ((key, band, kind) in groups) {
-            val arr = detail.optJSONArray(key) ?: continue
-            for (i in 0 until arr.length()) {
-                val raw = arr.optJSONObject(i) ?: continue
+            val rows = extractClientRows(detail.opt(key))
+            for (raw in rows) {
                 val client = JSONObject()
                     .put("name", raw.optString("HostName").ifBlank { "Thiết bị không tên" })
                     .put("ip", raw.optString("IpAddr"))
@@ -182,9 +202,110 @@ class ZteApiClient(private val baseUrl: String) {
                 nodeClients.put(client); allClients.put(client)
             }
         }
+        val reportedCount = ap.optInt("clientsCount", 0)
         perNode.put(JSONObject().put("name", ap.optString("name")).put("ip", ap.optString("ip"))
             .put("mac", ap.optString("mac")).put("master", master ?: JSONObject()).put("clients", nodeClients)
-            .put("clientCount", nodeClients.length()).put("raw", detail).put("readError", ""))
+            .put("clientCount", maxOf(nodeClients.length(), reportedCount))
+            .put("reportedClientCount", reportedCount).put("countSource", if (nodeClients.length() > 0) "popup" else "topology-accdevCount")
+            .put("raw", detail).put("readError", ""))
+    }
+
+    private fun extractClientRows(value: Any?): List<JSONObject> {
+        val found = mutableListOf<JSONObject>()
+        fun walk(item: Any?, depth: Int) {
+            if (depth > 5 || item == null || item == JSONObject.NULL) return
+            when (item) {
+                is JSONArray -> for (i in 0 until item.length()) walk(item.opt(i), depth + 1)
+                is JSONObject -> {
+                    val looksLikeClient = item.has("MacAddr") || item.has("MACAddress") || item.has("IpAddr")
+                    if (looksLikeClient) found.add(item)
+                    else {
+                        val keys = item.keys()
+                        while (keys.hasNext()) walk(item.opt(keys.next()), depth + 1)
+                    }
+                }
+            }
+        }
+        walk(value, 0)
+        return found
+    }
+
+    private fun readLegacyInventory(): JSONArray {
+        val result = JSONArray()
+        // The Linux reference uses F6640-compatible legacy inventory endpoints.
+        // HV3601P is not explicitly mapped in that project, so these are best-effort
+        // probes; failure must not invalidate a successful topology snapshot.
+        try { getText("/?_type=menuView&_tag=localNetStatus&_=${System.currentTimeMillis()}") } catch (_: Exception) { }
+        val endpoints = listOf(
+            Triple("wlan_client_stat_lua.lua", "OBJ_WLAN_AD_ID", "Wi-Fi"),
+            Triple("accessdev_landevs_lua.lua", "OBJ_ACCESSDEV_ID", "LAN")
+        )
+        for ((script, objectName, kind) in endpoints) {
+            try {
+                val xml = getText("/?_type=menuData&_tag=$script&_=${System.currentTimeMillis()}")
+                val rows = parseZteInstances(xml, objectName)
+                for (row in rows) {
+                    val mac = firstValue(row, "MACAddress", "MacAddr", "MAC")
+                    if (mac.isBlank()) continue
+                    val active = firstValue(row, "Active", "Status").lowercase()
+                    if (active in listOf("0", "false", "no", "offline", "disconnected")) continue
+                    result.put(JSONObject()
+                        .put("name", firstValue(row, "HostName", "DeviceName", "Host", "Name").ifBlank { "Thiết bị không tên" })
+                        .put("ip", firstValue(row, "IPAddress", "IpAddr", "IP"))
+                        .put("mac", mac)
+                        .put("kind", kind)
+                        .put("band", if (kind == "LAN") "LAN" else firstValue(row, "SSID", "SSIDName", "AliasName").ifBlank { "Wi-Fi" })
+                        .put("rssi", firstValue(row, "Rssi", "RSSI"))
+                        .put("snr", firstValue(row, "SNR"))
+                        .put("mode", firstValue(row, "WirelessMode", "Mode"))
+                        .put("channel", firstValue(row, "Channel"))
+                        .put("txRate", firstValue(row, "TxRateBps"))
+                        .put("rxRate", firstValue(row, "RxRateBps"))
+                        .put("time", firstValue(row, "AssocTime")))
+                }
+            } catch (_: Exception) {
+                // Keep topology/popup data usable if a firmware does not implement an endpoint.
+            }
+        }
+        return result
+    }
+
+    private fun parseZteInstances(xml: String, objectName: String): List<Map<String, String>> {
+        val parser = XmlPullParserFactory.newInstance().newPullParser()
+        parser.setInput(xml.reader())
+        val rows = mutableListOf<Map<String, String>>()
+        var inTarget = false
+        var inInstance = false
+        var key = ""
+        var row = linkedMapOf<String, String>()
+        var event = parser.eventType
+        while (event != XmlPullParser.END_DOCUMENT) {
+            when (event) {
+                XmlPullParser.START_TAG -> when (parser.name) {
+                    objectName -> inTarget = true
+                    "Instance" -> if (inTarget) { inInstance = true; row = linkedMapOf() }
+                    "ParaName" -> if (inInstance) key = parser.nextText().trim()
+                    "ParaValue" -> if (inInstance && key.isNotBlank()) { row[key] = parser.nextText().trim(); key = "" }
+                }
+                XmlPullParser.END_TAG -> when (parser.name) {
+                    "Instance" -> if (inInstance) { rows.add(row.toMap()); inInstance = false }
+                    objectName -> inTarget = false
+                }
+            }
+            event = parser.next()
+        }
+        return rows
+    }
+
+    private fun firstValue(row: Map<String, String>, vararg keys: String): String =
+        keys.firstNotNullOfOrNull { key -> row[key]?.takeIf { it.isNotBlank() } }.orEmpty()
+
+    private fun normalizeMac(value: String): String = value.uppercase().filter { it.isLetterOrDigit() }
+
+    private fun inventoryCount(items: JSONArray, kind: String): Int {
+        var count = 0
+        for (i in 0 until items.length()) if (items.optJSONObject(i)?.optString("kind") == kind) count++
+        return count
     }
 
     private fun getJson(path: String, stage: String = "API"): JSONObject = parseJson(getText(path), stage)

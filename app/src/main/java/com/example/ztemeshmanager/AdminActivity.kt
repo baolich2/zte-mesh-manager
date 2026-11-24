@@ -62,17 +62,30 @@ class AdminActivity : Activity() {
             try {
                 val client = ZteApiClient(base)
                 client.login(user, pass)
+                // Identify the actual router by controller MAC, not by IP/model.
+                val fresh = client.readMesh()
+                val newControllerMac = fresh.optString("controllerMac").uppercase().filter { it.isLetterOrDigit() }
+                val prefs = getSharedPreferences("zte", MODE_PRIVATE)
+                val oldControllerMac = prefs.getString("router_controller_mac", "")?.uppercase()?.filter { it.isLetterOrDigit() } ?: ""
+                val changedSystem = newControllerMac.isNotBlank() && oldControllerMac.isNotBlank() && newControllerMac != oldControllerMac
+                val stamp = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+                prefs.edit().putString("router", base).putString("username", user)
+                    .putString("router_controller_mac", newControllerMac)
+                    .putString("snapshot_json", fresh.toString())
+                    .putString("snapshot_time", stamp)
+                    .putLong("last_sync_epoch", System.currentTimeMillis())
+                    .putString("auto_status", if (changedSystem) "Đã chuyển sang hệ Router mới · dữ liệu vừa đồng bộ" else "Đăng nhập thành công · dữ liệu vừa đồng bộ")
+                    .putBoolean("snapshot_stale", false).apply()
                 ZteSession.client = client
                 ZteSession.routerUrl = base
                 ZteSession.authenticated = true
-                getSharedPreferences("zte", MODE_PRIVATE).edit().putString("router", base).putString("username", user)
-                    .putString("auto_status", "Đăng nhập thành công · đang đồng bộ Mesh").apply()
                 CredentialVault.save(this, user, pass)
+                // Ask the underlying dashboard to return to its Overview tab after this Activity closes.
+                prefs.edit().putBoolean("navigate_dashboard_after_login", true).apply()
                 runOnUiThread {
-                    status.text = "Đăng nhập thành công. Dashboard sẽ tự đọc Topology và từng node mỗi 30 giây."
-                    passwordInput.setText("")
-                    Toast.makeText(this, "Đã kết nối Router ZTE", Toast.LENGTH_LONG).show()
-                    loginButton.isEnabled = true
+                    Toast.makeText(this, "Đã kết nối Router ZTE", Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK)
+                    finish()
                 }
             } catch (e: Exception) {
                 ZteSession.authenticated = false
@@ -87,7 +100,16 @@ class AdminActivity : Activity() {
             try { ZteSession.client?.logout() } catch (e: Exception) { runOnUiThread { status.text = "Đã gửi đăng xuất; phản hồi: ${e.message}" } }
             ZteSession.client = null; ZteSession.authenticated = false
             CredentialVault.clear(this)
-            runOnUiThread { status.text = "Đã kết thúc phiên Router."; Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show() }
+            getSharedPreferences("zte", MODE_PRIVATE).edit()
+                .remove("snapshot_json").remove("snapshot").remove("snapshot_time")
+                .putBoolean("snapshot_stale", false)
+                .putString("auto_status", "Đã đăng xuất Router")
+                .apply()
+            runOnUiThread {
+                Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show()
+                setResult(RESULT_CANCELED)
+                finish()
+            }
         }
     }
 

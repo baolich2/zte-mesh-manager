@@ -1,57 +1,57 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.example.ztemeshmanager"
-4    android:versionCode="9"
-5    android:versionName="0.4.0" >
+4    android:versionCode="32"
+5    android:versionName="0.5.2" >
 6
 7    <uses-sdk
 8        android:minSdkVersion="23"
 9        android:targetSdkVersion="35" />
 10
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:2:5-67
-11-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:2:22-64
+11-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:2:5-67
+11-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:2:22-64
 12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-12-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:3:5-79
-12-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:3:22-76
+12-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:3:5-79
+12-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:3:22-76
 13
 14    <application
-14-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:4:5-18:19
+14-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:4:5-18:19
 15        android:allowBackup="false"
-15-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:7:9-36
+15-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:7:9-36
 16        android:debuggable="true"
 17        android:extractNativeLibs="false"
 18        android:icon="@mipmap/ic_launcher"
-18-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:5:9-43
+18-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:5:9-43
 19        android:label="ZTE Mesh Manager"
-19-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:8:9-41
+19-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:8:9-41
 20        android:roundIcon="@mipmap/ic_launcher_round"
-20-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:6:9-54
+20-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:6:9-54
 21        android:theme="@android:style/Theme.Material.NoActionBar"
-21-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:9:9-66
+21-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:9:9-66
 22        android:usesCleartextTraffic="false" >
-22-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:10:9-45
+22-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:10:9-45
 23        <activity
-23-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:11:9-76
+23-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:11:9-76
 24            android:name="com.example.ztemeshmanager.AdminActivity"
-24-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:11:19-48
+24-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:11:19-48
 25            android:exported="false" />
-25-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:11:49-73
+25-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:11:49-73
 26        <activity
-26-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:12:9-17:20
+26-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:12:9-17:20
 27            android:name="com.example.ztemeshmanager.MainActivity"
-27-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:12:19-47
+27-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:12:19-47
 28            android:exported="true" >
-28-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:12:48-71
+28-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:12:48-71
 29            <intent-filter>
-29-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:13:13-16:29
+29-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:13:13-16:29
 30                <action android:name="android.intent.action.MAIN" />
-30-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:14:17-69
-30-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:14:25-66
+30-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:14:17-69
+30-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:14:25-66
 31
 32                <category android:name="android.intent.category.LAUNCHER" />
-32-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:15:17-77
-32-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\src\main\AndroidManifest.xml:15:27-74
+32-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:15:17-77
+32-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\src\main\AndroidManifest.xml:15:27-74
 33            </intent-filter>
 34        </activity>
 35    </application>

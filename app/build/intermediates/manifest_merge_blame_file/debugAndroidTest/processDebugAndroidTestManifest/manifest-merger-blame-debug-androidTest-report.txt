@@ -3,32 +3,32 @@
 3    package="com.example.ztemeshmanager.test" >
 4
 5    <uses-sdk
-5-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:5:5-74
+5-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:5:5-74
 6        android:minSdkVersion="23"
-6-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:5:15-41
+6-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:5:15-41
 7        android:targetSdkVersion="35" />
-7-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:5:42-71
+7-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:5:42-71
 8
 9    <instrumentation
-9-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:11:5-15:76
+9-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:11:5-15:76
 10        android:name="android.test.InstrumentationTestRunner"
-10-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:11:22-75
+10-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:11:22-75
 11        android:functionalTest="false"
-11-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:14:22-52
+11-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:14:22-52
 12        android:handleProfiling="false"
-12-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:13:22-53
+12-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:13:22-53
 13        android:label="Tests for com.example.ztemeshmanager"
-13-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:15:22-74
+13-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:15:22-74
 14        android:targetPackage="com.example.ztemeshmanager" />
-14-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:12:22-72
+14-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:12:22-72
 15
 16    <application
-16-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:7:5-9:19
+16-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:7:5-9:19
 17        android:debuggable="true"
 18        android:extractNativeLibs="false" >
 19        <uses-library android:name="android.test.runner" />
-19-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:8:9-60
-19-->D:\AndroidProjects\ZTEMeshManager-v0.4.1-login-challenge-fix\ZTEMeshManager\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest14274117463200677250.xml:8:23-57
+19-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:8:9-60
+19-->D:\AndroidProjects\ZTEMeshManager-v0.5.2\work_v042\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest4088160315919697955.xml:8:23-57
 20    </application>
 21
 22</manifest>

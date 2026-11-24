@@ -1,60 +1,148 @@
 <!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#0b1220"><title>ZTE Mesh Manager</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1220;--panel:#151f30;--panel2:#1c2a3e;--line:#29384e;--muted:#91a4bd;--blue:#60a5fa;--green:#4ade80;--orange:#fbbf24;--red:#fb7185}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#eef4ff;font:15px system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:84px}.top{padding:22px 18px 14px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:19px;font-weight:750;letter-spacing:.2px}.sub{color:var(--muted);font-size:12px;margin-top:3px}.pill{font-size:11px;color:var(--orange);border:1px solid #745b23;background:#342b17;border-radius:30px;padding:6px 10px}.wrap{padding:0 16px}.hero{background:linear-gradient(135deg,#17345a,#17243a);border:1px solid #29496f;border-radius:18px;padding:17px;margin:8px 0 16px}.eyebrow{color:#a9c9ef;font-size:11px;letter-spacing:1px;font-weight:700}.hero h2{font-size:23px;margin:7px 0 4px}.hero p{margin:0;color:#b7c9df;font-size:12px;line-height:1.5}.section{font-size:15px;font-weight:750;margin:18px 2px 10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px;min-width:0}.metric{font-size:23px;font-weight:750;margin:7px 0 2px}.muted{color:var(--muted);font-size:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.node{display:flex;align-items:center;gap:12px;padding:13px;background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:9px}.ico{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#203753;color:var(--blue);font-size:20px}.node strong{font-size:14px}.status{font-size:11px;color:var(--green)}.notice{border:1px solid #665321;background:#2a2518;color:#f7d98a;padding:12px;border-radius:12px;font-size:12px;line-height:1.5;margin-top:12px}.action{width:100%;border:0;border-radius:12px;background:#2563eb;color:white;padding:14px;font-weight:700;font-size:14px;margin-top:12px}.secondary{background:var(--panel2);border:1px solid var(--line);color:#e7efff}.tabs{position:fixed;bottom:0;left:0;right:0;background:#101a2a;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:4}.tab{color:#8295ad;font-size:10px;text-align:center;min-width:20%;background:none;border:0}.tab b{display:block;font-size:19px;margin-bottom:3px;font-weight:500}.tab.active{color:var(--blue)}.page{display:none}.page.active{display:block}.small{font-size:11px;color:var(--muted);line-height:1.5}.device{padding:12px 0;border-bottom:1px solid var(--line)}input,select{width:100%;background:#0d1726;border:1px solid var(--line);border-radius:10px;color:white;padding:12px;margin-top:8px}.empty{padding:16px;text-align:center;color:var(--muted);font-size:12px}.kv{font-size:12px;color:var(--muted);margin-top:4px}.signal{font-weight:700}.good{color:#4ade80}.fair{color:#fbbf24}.weak{color:#fb7185}.nodegrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.node.clickable,.apcard{cursor:pointer;transition:border-color .15s}.node.clickable:active,.apcard:active{border-color:var(--blue)}.modalback{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:flex-end;padding:0}.modalback.show{display:flex}.modal{width:100%;max-height:82vh;overflow:auto;background:#111b2a;border:1px solid #33445e;border-radius:20px 20px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -8px 35px #0008}.modalhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.closebtn{border:0;border-radius:50%;width:34px;height:34px;background:#26364c;color:white;font-size:20px}.infogrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.infocell{background:#1a293d;border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}.infocell small{display:block;color:var(--muted);font-size:10px}.infocell b{display:block;margin-top:3px;font-size:13px;overflow-wrap:anywhere}.clientrow{padding:10px 0;border-bottom:1px solid var(--line)}
+:root{color-scheme:dark;--bg:#0b1220;--panel:#151f30;--panel2:#1c2a3e;--line:#29384e;--muted:#91a4bd;--blue:#60a5fa;--green:#4ade80;--orange:#fbbf24;--red:#fb7185}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#eef4ff;font:15px system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:84px}.top{padding:22px 18px 14px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:19px;font-weight:750;letter-spacing:.2px}.sub{color:var(--muted);font-size:12px;margin-top:3px}.pill{font-size:11px;color:var(--orange);border:1px solid #745b23;background:#342b17;border-radius:30px;padding:6px 10px}.wrap{padding:0 16px}.hero{background:linear-gradient(135deg,#17345a,#17243a);border:1px solid #29496f;border-radius:18px;padding:17px;margin:8px 0 16px}.eyebrow{color:#a9c9ef;font-size:11px;letter-spacing:1px;font-weight:700}.hero h2{font-size:23px;margin:7px 0 4px}.hero p{margin:0;color:#b7c9df;font-size:12px;line-height:1.5}.section{font-size:15px;font-weight:750;margin:18px 2px 10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px;min-width:0}.metric{font-size:23px;font-weight:750;margin:7px 0 2px}.muted{color:var(--muted);font-size:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.node{display:flex;align-items:center;gap:12px;padding:13px;background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:9px}.node-app-icon{width:40px;height:40px;flex:0 0 40px;object-fit:cover;border-radius:12px;background:#203753;border:1px solid #31445f}.reload-controls{display:flex;align-items:center;gap:7px}.interval-wrap{display:flex;align-items:center;gap:5px;background:#0d1726;border:1px solid var(--line);border-radius:10px;padding:0 8px;height:38px}.interval-wrap input{width:48px;margin:0;padding:6px 0;border:0;background:transparent;text-align:center;font-weight:700}.interval-wrap span{font-size:11px;color:var(--muted)}.reload-button{width:auto;margin:0;padding:9px 12px;font-size:12px;white-space:nowrap}.ico{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#203753;color:var(--blue);font-size:20px}.node strong{font-size:14px}.status{font-size:11px;color:var(--green)}.notice{border:1px solid #665321;background:#2a2518;color:#f7d98a;padding:12px;border-radius:12px;font-size:12px;line-height:1.5;margin-top:12px}.action{width:100%;border:0;border-radius:12px;background:#2563eb;color:white;padding:14px;font-weight:700;font-size:14px;margin-top:12px}.secondary{background:var(--panel2);border:1px solid var(--line);color:#e7efff}.tabs{position:fixed;bottom:0;left:0;right:0;background:#101a2a;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:4}.tab{color:#8295ad;font-size:10px;text-align:center;min-width:20%;background:none;border:0}.tab b{display:block;font-size:19px;margin-bottom:3px;font-weight:500}.tab.active{color:var(--blue)}.page{display:none}.page.active{display:block}.small{font-size:11px;color:var(--muted);line-height:1.5}.device{padding:12px 0;border-bottom:1px solid var(--line)}input,select{width:100%;background:#0d1726;border:1px solid var(--line);border-radius:10px;color:white;padding:12px;margin-top:8px}.empty{padding:16px;text-align:center;color:var(--muted);font-size:12px}.kv{font-size:12px;color:var(--muted);margin-top:4px}.signal{font-weight:700}.good{color:#4ade80}.fair{color:#fbbf24}.weak{color:#fb7185}.nodegrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.node.clickable,.apcard{cursor:pointer;transition:border-color .15s}.node.clickable:active,.apcard:active{border-color:var(--blue)}.modalback{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:flex-end;padding:0}.modalback.show{display:flex}.modal{width:100%;max-height:82vh;overflow:auto;background:#111b2a;border:1px solid #33445e;border-radius:20px 20px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -8px 35px #0008}.modalhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.closebtn{border:0;border-radius:50%;width:34px;height:34px;background:#26364c;color:white;font-size:20px}.infogrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.infocell{background:#1a293d;border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}.infocell small{display:block;color:var(--muted);font-size:10px}.infocell b{display:block;margin-top:3px;font-size:13px;overflow-wrap:anywhere}.clientrow{padding:10px 0;border-bottom:1px solid var(--line)}
+
+.tree-ap{border:1px solid var(--line);border-radius:16px;background:var(--panel);margin:10px 0;padding:0 14px;overflow:hidden}
+.tree-ap-head{display:flex;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.tree-ap-icon{width:34px;height:34px;object-fit:contain;border-radius:9px;flex:0 0 34px}
+.tree-children{margin:0 0 10px 16px;padding-left:16px;border-left:1px dashed #64748b}
+.tree-client{position:relative;padding:12px 0 12px 4px;border-bottom:1px solid var(--line)}
+.tree-client:before{content:'';position:absolute;left:-17px;top:25px;width:17px;border-top:1px dashed #64748b}
+.tree-client:last-child{border-bottom:0}
+.all-ap-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,.7fr);gap:8px;padding:11px 0;border-bottom:1px solid var(--line);font-size:12px}.all-ap-row>span{min-width:0;overflow-wrap:anywhere;word-break:break-word}
+.all-ap-row:last-child{border-bottom:0}.all-ap-head{font-weight:700;color:var(--muted);font-size:11px}
+.all-ap-sub{grid-column:1/-1;color:var(--muted);font-size:11px;overflow-wrap:anywhere}
+@media(max-width:420px){.all-ap-row{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,.75fr) minmax(0,.65fr);gap:5px;font-size:10px}.all-ap-head{font-size:10px}.all-ap-row>span{min-width:0;overflow-wrap:anywhere;word-break:break-word}}
+
+ .mesh-tree{padding:18px 10px 20px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#1c2d46 0%,#151f30 68%)}
+/* Responsive topology: every child row reserves one shared, uninterrupted connector lane. */
+.mesh-level{position:relative;display:grid;grid-template-columns:repeat(var(--mesh-cols,1),minmax(0,1fr));justify-items:stretch;align-items:start;column-gap:10px;row-gap:18px;margin:0;padding-top:30px;width:100%}
+.mesh-level.root{display:block;padding-top:0}
+.mesh-branch{position:relative;min-width:0;width:100%;max-width:none;padding:0}
+.mesh-level.root>.mesh-branch{width:100%;max-width:none;margin:0 auto}
+.mesh-level.root>.mesh-branch>.mesh-node{width:min(100%,280px);margin:0 auto}
+.mesh-children{margin:0;padding-top:30px}
+/* All connector segments are drawn by one SVG path per sibling group.
+   This avoids sub-pixel seams caused by separate CSS borders/pseudo-elements. */
+.mesh-connectors{position:absolute;left:0;top:0;width:100%;height:30px;overflow:visible;z-index:2;pointer-events:none}
+.mesh-connectors path{fill:none;stroke:#ff5252;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.mesh-flow-arrow{fill:#fff1f2;stroke:#ff5252;stroke-width:.8px;stroke-linejoin:round;opacity:.98;filter:drop-shadow(0 0 1px rgba(255,82,82,.55))}.mesh-tag.wireless{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;white-space:normal;line-height:1.2}.mesh-tag.wireless strong{font-weight:600}
+.mesh-node{position:relative;min-width:0;min-height:148px;background:linear-gradient(155deg,#1d3049,#142033);border:1px solid #3a506e;border-radius:18px;padding:13px 8px 12px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;gap:4px;box-shadow:0 7px 18px #0003;cursor:pointer}
+.mesh-node:active{border-color:#60a5fa}
+.mesh-node-icon{width:52px;height:52px;object-fit:contain;border-radius:14px;background:#0b1728;padding:5px;margin-bottom:2px;flex:0 0 auto}
+.mesh-node-title{font-size:14px;font-weight:800;overflow-wrap:anywhere;line-height:1.25}
+.mesh-node-meta{font-size:10px;color:var(--muted);margin-top:2px;overflow-wrap:anywhere;line-height:1.4}
+.mesh-node-tags{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-top:6px;max-width:100%}
+.mesh-tag{font-size:10px;padding:4px 8px;border-radius:20px;background:#22344b;color:#c7d8ed;border:1px solid #354b68;line-height:1.25;overflow-wrap:anywhere}
+.mesh-tag.wired{color:#ffc36b;border-color:#9a5b12;background:#3a260f}
+.mesh-tag.wireless{color:#a5f078;border-color:#43852b;background:#19351b}
+.mesh-tag.signal{color:#fcd34d;border-color:#806522;background:#332b17}
+.mesh-tag.root-tag{color:#b9d8ff;border-color:#45658c;background:#203650}
+.mesh-count{position:absolute;top:8px;right:8px;min-width:25px;height:25px;padding:0 6px;display:grid;place-items:center;border-radius:20px;background:#0ea5e9;color:white;font-size:11px;font-weight:800;border:2px solid #1b2a40}
+.mesh-orphan-note{font-size:10px;color:#fbbf24;margin-top:5px}
+.mesh-legend{display:flex;justify-content:center;gap:8px 14px;flex-wrap:wrap;margin:18px 2px 2px;padding:12px 8px;border:1px solid #34465f;border-radius:14px;background:#101b2b;color:#c4d2e5;font-size:10px}
+.mesh-legend span{display:inline-flex;align-items:center;gap:6px}.mesh-legend i{display:inline-block;width:10px;height:10px;border-radius:50%}.mesh-legend .eth{background:#f59e0b}.mesh-legend .wifi{background:#65c832}.mesh-legend .count{background:#0ea5e9}
+/* Three direct controller links fit evenly on a phone; icons and labels scale together. */
+.mesh-children.mesh-count-3>.mesh-branch .mesh-node{min-height:138px;padding:11px 5px 10px}
+.mesh-children.mesh-count-3>.mesh-branch .mesh-node-icon{width:40px;height:40px;border-radius:11px;padding:4px}
+.mesh-children.mesh-count-3>.mesh-branch .mesh-node-title{font-size:12px}
+.mesh-children.mesh-count-3>.mesh-branch .mesh-node-meta,.mesh-children.mesh-count-3>.mesh-branch .mesh-tag{font-size:9px}
+@media(max-width:360px){.mesh-tree{padding-left:6px;padding-right:6px}.mesh-level{column-gap:7px}.mesh-node{padding:10px 4px;min-height:138px}.mesh-node-icon{width:46px;height:46px}.mesh-node-title{font-size:12px}.mesh-node-meta,.mesh-tag{font-size:9px}.mesh-children.mesh-count-3>.mesh-branch .mesh-node-icon{width:36px;height:36px}}
 </style></head><body>
 <header class="top"><div><div class="brand">◈ ZTE Mesh Manager</div><div class="sub">HV3601P · Controller Bridge</div></div><span class="pill" id="liveBadge">CHƯA CÓ DỮ LIỆU</span></header>
 <main class="wrap">
 <section id="home" class="page active">
 <div class="hero"><div class="eyebrow">MẠNG GIA ĐÌNH</div><h2>Xin chào 👋</h2><p>Quản lý hệ thống Mesh ZTE tại địa chỉ Controller <b id="heroControllerIp">Chưa đọc được từ Router</b>.</p></div>
 <div class="grid"><div class="card"><div class="muted">Controller · từ Topology</div><div class="metric" id="controllerName" style="font-size:18px">Chưa đọc được</div><div class="status" id="controllerState">● Chưa đồng bộ</div><div class="muted" id="controllerIp">IP —</div></div><div class="card"><div class="muted">Dữ liệu Mesh · từ Topology</div><div class="metric" id="apCount">— Access Point</div><div class="muted" id="clientCountHome">Chưa có dữ liệu Router</div><div class="muted" id="agentCountHome">— Agent</div></div></div>
-<div class="section">Thiết bị mạng · đọc trực tiếp từ ALL APs</div><div id="homeNodes"><div class="card empty">Đăng nhập Router và mở Topology để bắt đầu đồng bộ.</div></div>
+<div class="row" style="justify-content:space-between;align-items:center;margin:16px 0 10px;gap:6px"><div class="section" style="margin:0;flex:1">Thiết bị mạng · đọc trực tiếp từ ALL APs</div><div class="reload-controls"><label class="interval-wrap"><input id="refreshIntervalInput" type="number" inputmode="numeric" min="10" max="3600" step="1" value="30" aria-label="Chu kỳ tự động đồng bộ tính bằng giây" onchange="saveRefreshInterval(this.value)"><span>giây</span></label><button class="action secondary reload-button" onclick="reloadOverview()">↻ Tải lại</button></div></div><div id="homeNodes"><div class="card empty">Đăng nhập Router và mở Topology để bắt đầu đồng bộ.</div></div>
 <div class="notice" id="liveNotice">Chưa có dữ liệu Topology. Các thông tin bên dưới chỉ xuất hiện sau khi Router phản hồi; ứng dụng không dùng số liệu từ ảnh chụp.</div>
 <button class="action" onclick="openAdmin()">Kết nối / đăng nhập Router ↗</button>
 <div class="card" style="margin-top:10px"><div class="row"><b>Trạng thái đồng bộ</b><span class="muted" id="snapshotTime">Chưa có dữ liệu</span></div><div id="snapshotSummary" class="small" style="margin-top:10px">Chưa nhận được dữ liệu từ Router.</div></div>
 </section>
 <section id="mesh" class="page"><div class="section">Mesh · Access Points từ Router</div><div id="meshList" class="empty">Chưa có dữ liệu AP.</div></section>
-<section id="clients" class="page"><div class="section">Clients · thiết bị đang kết nối</div><div class="card"><input id="searchClient" placeholder="Tìm tên thiết bị…" oninput="renderClients()"><div class="row" style="margin:10px 0"><select id="bandFilter" onchange="renderClients()"><option value="all">Tất cả băng tần</option><option value="2.4GHz">2.4GHz</option><option value="5GHz">5GHz</option></select><select id="upFilter" onchange="renderClients()"><option value="all">Tất cả upstream</option><option value="controller">controller</option><option value="agent">agent</option></select></div><div id="clientList" class="empty">Chưa có dữ liệu Client.</div></div></section>
-<section id="signal" class="page"><div class="section">Signal · RSSI thực tế</div><div class="grid"><div class="card"><div class="muted">Client có RSSI</div><div class="metric" id="rssiCount">—</div><div class="muted">Từ dữ liệu Router</div></div><div class="card"><div class="muted">RSSI trung bình</div><div class="metric" id="rssiAverage">—</div><div class="muted">Chỉ tính giá trị đọc được</div></div></div><div class="section">Chất lượng tín hiệu từng Client</div><div id="signalList" class="card empty">Chưa có dữ liệu RSSI.</div><div class="notice">RSSI càng gần 0 dBm thì tín hiệu càng mạnh. Không hiển thị giá trị suy đoán.</div></section>
+<section id="clients" class="page"><div class="section">Clients · thiết bị đang kết nối</div><div class="card"><input id="searchClient" placeholder="Tìm tên, IP hoặc MAC…" oninput="renderClients()"><div class="row" style="margin:10px 0"><select id="bandFilter" onchange="renderClients()"><option value="all">Tất cả băng tần</option><option value="2.4GHz">2.4GHz</option><option value="5GHz">5GHz</option></select><select id="upFilter" onchange="renderClients()"><option value="all">Tất cả AP</option><option value="controller">Controller</option><option value="agent">Agent</option></select></div><div class="row" style="margin:10px 0"><select id="connectionFilter" onchange="renderClients()"><option value="all">Mọi kết nối</option><option value="wifi">Wi-Fi</option><option value="lan">LAN</option></select><select id="rssiFilter" onchange="renderClients()"><option value="all">Mọi chất lượng RSSI</option><option value="good">Tốt (≥ -55 dBm)</option><option value="fair">Trung bình (-67 đến -56 dBm)</option><option value="weak">Yếu (< -67 dBm)</option><option value="unknown">Chưa có RSSI</option></select></div><div class="section" style="margin-top:18px">Clients theo từng AP</div><div id="clientList" class="empty">Chưa có dữ liệu Client.</div><div class="section" style="margin-top:22px">All AP</div><div class="card" id="allApList"><div class="empty">Chưa có dữ liệu AP.</div></div></div></section>
 <section id="tools" class="page"><div class="section">Công cụ</div><div class="card"><b>Kết nối Router (Native API)</b><p class="muted">Đăng nhập trực tiếp bằng API HTTPS. Dashboard đọc topology và từng node không dùng WebView quản trị.</p><button class="action" onclick="openAdmin()">Đăng nhập / quản lý phiên</button><button class="action secondary" onclick="AndroidApp.refreshNow()">Cập nhật ngay</button><button class="action secondary" onclick="AndroidApp.logout()">Đăng xuất Router</button><p class="small" id="autoStatus">Tự động đồng bộ mỗi 30 giây khi ứng dụng ở foreground.</p></div><div class="card" style="margin-top:10px"><b>Reboot</b><p class="muted">Đang khóa cho đến khi xác minh được lệnh điều khiển an toàn.</p></div></section>
 </main>
 <div class="modalback" id="nodeModal" onclick="if(event.target===this)closeNodeModal()"><div class="modal"><div class="modalhead"><div><div class="eyebrow">NODE INFORMATION</div><h2 id="modalNodeName" style="margin:4px 0 0;font-size:20px">Access Point</h2></div><button class="closebtn" onclick="closeNodeModal()">×</button></div><div id="modalNodeInfo"></div><div class="section" style="margin-top:16px">Thiết bị đang kết nối</div><div id="modalNodeClients" class="empty">Chưa có dữ liệu chi tiết của Node.</div><div class="small" id="modalNodeNote" style="margin-top:10px"></div></div></div>
-<nav class="tabs"><button class="tab active" data-page="home"><b>⌂</b>Tổng quan</button><button class="tab" data-page="mesh"><b>⌘</b>Mesh</button><button class="tab" data-page="clients"><b>▦</b>Clients</button><button class="tab" data-page="signal"><b>◉</b>Signal</button><button class="tab" data-page="tools"><b>⚙</b>Công cụ</button></nav>
+<nav class="tabs"><button class="tab active" data-page="home"><b>⌂</b>Tổng quan</button><button class="tab" data-page="mesh"><b>⌘</b>Mesh</button><button class="tab" data-page="clients"><b>▦</b>Clients</button><button class="tab" data-page="tools"><b>⚙</b>Công cụ</button></nav>
 <script>
 let liveAPs=[],liveClients=[],liveNodeData=[],lastData=null;
 const norm=s=>(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/\s+/g,' ').trim();
+function displayBand(value){const v=String(value??'').trim();return /^5g$/i.test(v)?'5GHz':v.replace(/\b5G\b/gi,'5GHz');}
+function displayLinkSpeed(value){const v=String(value??'').trim();return v&&Number(v)>0?v+' Mbps':(v||'—');}
+function displayBackhaul(value){return displayBand(value||'—');}
+function isControllerAp(a){return norm(a?.role)==='controller'||norm(a?.name).includes('controller');}
+function saveRefreshInterval(value){const n=Number.parseInt(value,10),input=document.getElementById('refreshIntervalInput');if(!Number.isInteger(n)||n<10||n>3600){if(input)input.value=window.AndroidApp?AndroidApp.getRefreshIntervalSeconds():30;if(window.AndroidApp)AndroidApp.showMessage('Chu kỳ hợp lệ từ 10 đến 3600 giây.');return;}if(window.AndroidApp){const ok=AndroidApp.setRefreshIntervalSeconds(n);if(ok){input.value=String(n);AndroidApp.showMessage('Đã lưu chu kỳ tự động: '+n+' giây.');}}}
+function loadRefreshInterval(){const input=document.getElementById('refreshIntervalInput');if(input&&window.AndroidApp)input.value=String(AndroidApp.getRefreshIntervalSeconds());}
 function headerIndex(headers,terms){return headers.findIndex(h=>terms.some(t=>norm(h).includes(norm(t))));}
 function parseTables(data){
  if(Array.isArray(data.aps))return {aps:data.aps,clients:Array.isArray(data.clients)?data.clients:[]};
  const aps=[],clients=[];for(const table of (data.tables||[])){const rows=table.rows||[];if(rows.length<2)continue;const headers=rows[0].map(x=>norm(x));
  const apName=headerIndex(headers,['ap name','access point name']);const clientName=headerIndex(headers,['client name']);
  if(apName>=0){for(const r of rows.slice(1)){if(!r[apName])continue;aps.push({name:r[apName],ip:r[headerIndex(headers,['ip'])]||'',mac:r[headerIndex(headers,['mac'])]||'',role:r[headerIndex(headers,['role'])]||'',backhaul:r[headerIndex(headers,['backhaul'])]||'',area:r[headerIndex(headers,['operate area'])]||'',linkSpeed:r[headerIndex(headers,['link speed'])]||''});}}
- if(clientName>=0){for(const r of rows.slice(1)){if(!r[clientName])continue;clients.push({name:r[clientName],upstream:r[headerIndex(headers,['upstream device'])]||'',band:r[headerIndex(headers,['associated band'])]||'',rssi:r[headerIndex(headers,['rssi'])]||'',mac:r[headerIndex(headers,['mac'])]||'',ip:r[headerIndex(headers,['ip'])]||'',down:r[headerIndex(headers,['real-time dow'])]||'',up:r[headerIndex(headers,['real-time upst'])]||'',mode:r[headerIndex(headers,['wireless mode'])]||''});}}
+ if(clientName>=0){for(const r of rows.slice(1)){if(!r[clientName])continue;clients.push({name:r[clientName],upstream:r[headerIndex(headers,['upstream device'])]||'',band:r[headerIndex(headers,['associated band'])]||'',connectionType:(r[headerIndex(headers,['associated band'])]||'')?'wifi':'unknown',rssi:r[headerIndex(headers,['rssi'])]||'',mac:r[headerIndex(headers,['mac'])]||'',ip:r[headerIndex(headers,['ip'])]||'',down:r[headerIndex(headers,['real-time dow'])]||'',up:r[headerIndex(headers,['real-time upst'])]||'',mode:r[headerIndex(headers,['wireless mode'])]||''});}}
  }return {aps,clients};}
 function signalClass(v){const n=parseFloat((v||'').replace(/[^-0-9.]/g,''));return !Number.isFinite(n)?'':n>=-55?'good':n>=-67?'fair':'weak';}
-function renderClients(){const q=norm(document.getElementById('searchClient')?.value||''),b=document.getElementById('bandFilter')?.value||'all',u=document.getElementById('upFilter')?.value||'all';const rows=liveClients.filter(c=>norm(c.name).includes(q)&&(b==='all'||c.band===b)&&(u==='all'||norm(c.upstream)===u));const host=document.getElementById('clientList');host.innerHTML=rows.length?rows.map(c=>`<div class="device"><div class="row"><b>${esc(c.name)}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi||'—')}</span></div><div class="small">${esc(c.upstream||'—')} · ${esc(c.band||'—')} · ${esc(c.mode||'')}</div><div class="kv">IP ${esc(c.ip||'—')} · MAC ${esc(c.mac||'—')}</div><div class="kv">↓ ${esc(c.down||'—')} · ↑ ${esc(c.up||'—')}</div></div>`).join(''):'<div class="empty">Không có Client trong dữ liệu Router hiện tại.</div>';}
+function apStableKey(ap){return norm(ap?.mac)||norm(ap?.ip)||norm(ap?.name);}
+function renderClients(){
+ const q=norm(document.getElementById('searchClient')?.value||''),b=document.getElementById('bandFilter')?.value||'all',u=document.getElementById('upFilter')?.value||'all',connection=document.getElementById('connectionFilter')?.value||'all',quality=document.getElementById('rssiFilter')?.value||'all';
+ const host=document.getElementById('clientList');
+ const groups=liveAPs.map(ap=>{const detail=nodeDetailFor(ap);let rows=parseNodeClients(detail);if(!rows.length){rows=liveClients.filter(c=>norm(c.upstream)===norm(ap.name));}
+ rows=rows.filter(c=>{const searchable=norm([c.name,c.ip,c.mac,c.mode,c.upstream].join(' '));const rv=Number.parseFloat(String(c.rssi||'').replace(/[^-0-9.]/g,''));const hasRssi=Number.isFinite(rv);const signal= !hasRssi?'unknown':rv>=-55?'good':rv>=-67?'fair':'weak';return searchable.includes(q)&&(b==='all'||c.band===b)&&(u==='all'||(isControllerAp(ap)?u==='controller':u==='agent'))&&(connection==='all'||(c.connectionType||'unknown')===connection)&&(quality==='all'||signal===quality);});
+ return {ap,rows};}).filter(g=>g.rows.length||(!q&&b==='all'&&u==='all'&&connection==='all'&&quality==='all'));
+ if(host){host.innerHTML=groups.length?groups.map(g=>{return `<div class="tree-ap"><div class="tree-ap-head"><img class="tree-ap-icon" src="app-node-icon.png" alt=""><span style="flex:1;min-width:0"><b>${esc(g.ap.name||'Access Point')}</b><span class="small" style="display:block">${esc(isControllerAp(g.ap)?'Controller':'Agent')} · ${esc(g.ap.ip||'IP —')}</span></span><span class="status">${g.rows.length} Client</span></div><div class="tree-children">${g.rows.length?g.rows.map(c=>`<div class="tree-client"><div class="row"><b>${esc(c.name||'Thiết bị')}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi||'—')}</span></div><div class="small">${esc(c.ip||'IP —')} · ${esc(displayBand(c.band||'—'))} · ${esc(c.mode||'')}</div><div class="kv">MAC ${esc(c.mac||'—')} · ${esc(c.time||'')}</div><div class="kv">↓ ${esc(c.down||'—')} · ↑ ${esc(c.up||'—')}</div></div>`).join(''):'<div class="empty">Chưa có Client đọc được cho AP này.</div>'}</div></div>`}).join(''):'<div class="empty">Không có Client phù hợp bộ lọc.</div>'; }
+
+ const allAp=document.getElementById('allApList');if(allAp){allAp.innerHTML=liveAPs.length?`<div class="all-ap-row all-ap-head"><span>Tên AP / IP</span><span>Vai trò</span><span>Backhaul</span><span>RSSI</span></div>`+liveAPs.map(a=>{const wireless=!isControllerAp(a)&&!norm(a.backhaul).includes('eth');const r=wireless&&/^-?\d+(?:\.\d+)?$/.test(String(a.rssi||''))&&Number(a.rssi)<0?a.rssi+' dBm':'—';return `<div class="all-ap-row"><span><b>${esc(a.name||'Access Point')}</b><br><span class="small">${esc(a.ip||'IP —')}</span></span><span>${esc(a.role|| (isControllerAp(a)?'Controller':'Agent'))}</span><span>${esc(isControllerAp(a)?'—':displayBackhaul(a.backhaul))}</span><span>${esc(r)}</span><span class="all-ap-sub">MAC ${esc(a.mac||'—')}</span></div>`}).join(''):'<div class="empty">Chưa có dữ liệu AP.</div>'; }
+
+}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function parseNodeClients(node){
- if(Array.isArray(node?.clients))return node.clients;
+ if(Array.isArray(node?.clients))return node.clients.map(c=>({...c,connectionType:c.connectionType||(c.band?'wifi':'unknown')}));
  const out=[];
  for(const t of (node?.tables||[])){
   const rows=t.rows||[];if(rows.length<2)continue;
   const h=rows[0].map(norm),ni=headerIndex(h,['device name','client name']);
   if(ni<0)continue;
   const ix={mac:headerIndex(h,['mac']),ip:headerIndex(h,['ip']),time:headerIndex(h,['associated time']),down:headerIndex(h,['real-time dow']),up:headerIndex(h,['real-time upst']),rssi:headerIndex(h,['rssi']),mode:headerIndex(h,['wireless mode'])};
-  const ctx=norm(t.context||node.popupText||'');const band=ctx.includes('5ghz')?'5GHz':ctx.includes('2.4ghz')?'2.4GHz':'';
-  for(const r of rows.slice(1))if(r[ni]&&!/there are no data/i.test(r[ni]))out.push({name:r[ni],mac:r[ix.mac]||'',ip:r[ix.ip]||'',time:r[ix.time]||'',down:r[ix.down]||'',up:r[ix.up]||'',rssi:r[ix.rssi]||'',mode:r[ix.mode]||'',band});
+  const ctx=norm(t.context||node.popupText||'');const band=ctx.includes('5ghz')?'5GHz':ctx.includes('2.4ghz')?'2.4GHz':'';const connectionType=ctx.includes('lan')?'lan':(ctx.includes('wlan')||band?'wifi':'unknown');
+  for(const r of rows.slice(1))if(r[ni]&&!/there are no data/i.test(r[ni]))out.push({name:r[ni],mac:r[ix.mac]||'',ip:r[ix.ip]||'',time:r[ix.time]||'',down:r[ix.down]||'',up:r[ix.up]||'',rssi:r[ix.rssi]||'',mode:r[ix.mode]||'',band,connectionType});
  }
  return out;
+}
+function nodeDetailFor(ap){
+ return liveNodeData.find(n=>(ap.mac&&norm(n.mac)===norm(ap.mac))||(ap.ip&&norm(n.ip)===norm(ap.ip))||norm(n.name)===norm(ap.name));
+}
+function uniqueNodeClientCount(detail){
+ const rows=parseNodeClients(detail);
+ if(rows.length){
+  const seen=new Set();
+  rows.forEach(c=>{const key=norm(c.mac)||norm(c.ip)||norm(c.name);if(key)seen.add(key);});
+  return {count:seen.size,source:'popup'};
+ }
+ if(detail&&!detail.readError&&Number(detail.reportedClientCount||detail.clientCount)>0)
+  return {count:Number(detail.reportedClientCount||detail.clientCount),source:'topology'};
+ return {count:null,source:'none'};
+}
+function nodeCountLabel(ap){
+ const detail=nodeDetailFor(ap),result=uniqueNodeClientCount(detail);
+ if(result.count===null)return 'Chưa đọc được số Client';
+ return result.count+' Client'+(result.source==='topology'?' · theo Topology':'');
+}
+function reloadOverview(){
+ const button=document.querySelector('#home button[onclick="reloadOverview()"]');
+ if(button){button.disabled=true;button.textContent='Đang tải…';}
+ if(window.AndroidApp&&AndroidApp.refreshNow)AndroidApp.refreshNow();
+ setTimeout(()=>{if(button){button.disabled=false;button.textContent='↻ Tải lại';}},1500);
 }
 function openNodeModal(index){
  const a=liveAPs[index]; if(!a)return;
  document.getElementById('modalNodeName').textContent=a.name||'Access Point';
- document.getElementById('modalNodeInfo').innerHTML=`<div class="infogrid"><div class="infocell"><small>IP</small><b>${esc(a.ip||'—')}</b></div><div class="infocell"><small>MAC</small><b>${esc(a.mac||'—')}</b></div><div class="infocell"><small>Role</small><b>${esc(a.role||'—')}</b></div><div class="infocell"><small>Backhaul</small><b>${esc(a.backhaul||'—')}</b></div><div class="infocell"><small>Link Speed</small><b>${esc(a.linkSpeed||'—')}</b></div><div class="infocell"><small>Operate area</small><b>${esc(a.area||'—')}</b></div></div>`;
- const detail=liveNodeData.find(n=>(a.mac&&norm(n.mac)===norm(a.mac))||(a.ip&&norm(n.ip)===norm(a.ip))||norm(n.name)===norm(a.name));
+ const controllerNode=isControllerAp(a);const infoCells=[['IP',a.ip],['MAC',a.mac],['Role',a.role],...(controllerNode?[]:[['Backhaul',displayBackhaul(a.backhaul)],['Link Speed',displayLinkSpeed(a.linkSpeed)]]),['Operate area',a.area]];document.getElementById('modalNodeInfo').innerHTML=`<div class="infogrid">${infoCells.map(([label,value])=>`<div class="infocell"><small>${esc(label)}</small><b>${esc(value||'—')}</b></div>`).join('')}</div>`;
+ const detail=nodeDetailFor(a);
  const rows=parseNodeClients(detail);
  const host=document.getElementById('modalNodeClients');
  if(rows.length){
-  host.innerHTML=`<div class="small" style="margin-bottom:8px">${rows.length} thiết bị · dữ liệu đọc từ cửa sổ Router Information của Node</div>`+rows.map(c=>`<div class="clientrow"><div class="row"><b>${esc(c.name)}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi||'—')}</span></div><div class="small">${esc(c.band||'—')} · ${esc(c.mode||'')}</div><div class="kv">IP ${esc(c.ip||'—')} · MAC ${esc(c.mac||'—')}</div><div class="kv">↓ ${esc(c.down||'—')} · ↑ ${esc(c.up||'—')} · ${esc(c.time||'')}</div></div>`).join('');
+  host.innerHTML=`<div class="small" style="margin-bottom:8px">${rows.length} thiết bị · dữ liệu đọc từ cửa sổ Router Information của Node</div>`+rows.map(c=>`<div class="clientrow"><div class="row"><b>${esc(c.name)}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi||'—')}</span></div><div class="small">${esc(displayBand(c.band||'—'))} · ${esc(c.mode||'')}</div><div class="kv">IP ${esc(c.ip||'—')} · MAC ${esc(c.mac||'—')}</div><div class="kv">↓ ${esc(c.down||'—')} · ↑ ${esc(c.up||'—')} · ${esc(c.time||'')}</div></div>`).join('');
   document.getElementById('modalNodeNote').textContent='Đọc riêng từ popup Router Information của AP này.';
  }else{
   const err=detail?.readError||(!detail?'Chưa có bản ghi chi tiết cho AP này.':'Router không trả về bảng Client có cấu trúc nhận diện được.');
@@ -64,6 +152,125 @@ function openNodeModal(index){
  document.getElementById('nodeModal').classList.add('show');
 }
 function closeNodeModal(){document.getElementById('nodeModal').classList.remove('show');}
+
+function meshNodeId(ap){return isControllerAp(ap)?'MESH.CONTROLLER':String(ap.role||'').trim();}
+function meshParentId(ap){return String(ap.parent||'').trim();}
+function meshLinkLabel(ap){
+ if(isControllerAp(ap))return '';
+ const wired=norm(ap.backhaul).includes('eth'),speed=String(ap.linkSpeed||'').trim();
+ const parts=[wired?'ETH':('Wi-Fi '+displayBackhaul(ap.backhaul))];
+ if(speed&&Number(speed)>0)parts.push(displayLinkSpeed(speed));
+ return parts.join(' · ');
+}
+function renderMeshNode(ap,index,children,path=new Set()){
+ const id=meshNodeId(ap);
+ if(path.has(id))return `<div class="mesh-branch"><div class="mesh-node"><div class="mesh-node-title">${esc(ap.name||'Node')}</div><div class="mesh-orphan-note">Phát hiện vòng lặp trong quan hệ node cha.</div></div></div>`;
+ const nextPath=new Set(path);nextPath.add(id);
+ const controller=isControllerAp(ap),link=meshLinkLabel(ap),signal=String(ap.rssi||'').trim();
+ const validRssi=!controller&&!norm(ap.backhaul).includes('eth')&&/^-?\d+(?:\.\d+)?$/.test(signal)&&Number(signal)<0;
+ const wired=norm(ap.backhaul).includes('eth');
+ const tags=controller?'<span class="mesh-tag root-tag">Controller gốc</span>':(wired
+  ?`<span class="mesh-tag wired">${esc(link||ap.backhaul||'Backhaul —')}</span>`
+  :`<span class="mesh-tag wireless"><span>Wi-Fi ${esc(displayBackhaul(ap.backhaul||'—'))}</span>${ap.linkSpeed&&Number(ap.linkSpeed)>0?`<strong>${esc(displayLinkSpeed(ap.linkSpeed))}</strong>`:''}</span>`);
+ const childNodes=children.get(meshNodeId(ap))||[];
+ const childHtml=childNodes.map(child=>renderMeshNode(child,liveAPs.indexOf(child),children,nextPath)).join('');
+ const childCount=childNodes.length;
+ const childCols=Math.min(Math.max(childCount,1),3);
+ const centers=childNodes.map((_,i)=>((i+0.5)*100/childCols));
+ // One continuous trunk + sibling bar + one drop per child. The bar spans
+ // the first and last child centers, so the left branch cannot be left detached.
+ let connectorPath='';
+ if(childCount===1){connectorPath='M 50 0 V 30';}
+ else if(childCount>1){
+  connectorPath=`M 50 0 V 15 H ${centers[0]} H ${centers[centers.length-1]}`;
+  connectorPath+=centers.map(x=>` M ${x} 15 V 30`).join('');
+ }
+ // Use a real SVG arrow polygon instead of a text glyph; rotate it to the
+ // tangent of each parent-to-child route so it follows vertical and horizontal
+ // sections consistently in Android WebView.
+ const flowPaths=childNodes.map((_,i)=>`M 50 0 V 15 H ${centers[i]} V 30`);
+ // Each child gets its own invisible route and SVG arrow. Motion is driven by
+ // JavaScript (not SVG SMIL) because Android WebView does not animate
+ // animateMotion/rotate=auto consistently on nested topology SVGs.
+ const flowArrows=childCount?flowPaths.map((d,i)=>`<path class="mesh-flow-route" d="${d}" fill="none" stroke="none"/><polygon class="mesh-flow-arrow" data-flow-index="${i}" points="0,-2.6 6,0 0,2.6 1.4,0"/>`).join(''):'';
+ const connectorSvg=childCount?`<svg class="mesh-connectors" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path class="mesh-connector-base" d="${connectorPath}"/>${flowArrows}</svg>`:'';
+ const orphan=ap._orphan?`<div class="mesh-orphan-note">Không tìm thấy node cha (${esc(meshParentId(ap)||'không có Parent ID')}); đặt ở cấp gốc.</div>`:'';
+ const count=String(nodeCountLabel(ap)).match(/^\d+/)?.[0]||'—';
+ return `<div class="mesh-branch"><div class="mesh-node" role="button" tabindex="0" aria-label="${esc(ap.name||'Access Point')} - xem chi tiết" onclick="openNodeModal(${index})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNodeModal(${index})}"><img class="mesh-node-icon" src="app-node-icon.png" alt=""><span class="mesh-count">${esc(count)}</span><div class="mesh-node-title">${esc(ap.name||'Access Point')}</div><div class="mesh-node-meta">${esc(ap.ip||'IP —')}<br>${esc(controller?'Controller':ap.role||'Agent')}</div><div class="mesh-node-tags">${tags}${validRssi?`<span class="mesh-tag signal">RSSI ${esc(signal)} dBm</span>`:''}</div>${orphan}</div>${childHtml?`<div class="mesh-level mesh-children mesh-count-${childCount}" style="--mesh-cols:${childCols}">${connectorSvg}${childHtml}</div>`:''}</div>`;
+}
+function renderMeshTree(){
+ const controller=liveAPs.find(isControllerAp);
+ if(!controller)return '<div class="empty">Chưa xác định được Controller trong Topology.</div>';
+ liveAPs.forEach(a=>{delete a._orphan;});
+ const byId=new Map(liveAPs.map(a=>[meshNodeId(a),a])),children=new Map(),roots=[];
+ liveAPs.forEach(ap=>{
+  if(isControllerAp(ap))return;
+  const parent=meshParentId(ap);
+  if(parent&&byId.has(parent)&&byId.get(parent)!==ap){if(!children.has(parent))children.set(parent,[]);children.get(parent).push(ap);}
+  else{ap._orphan=!!parent;roots.push(ap);}
+ });
+ const seen=new Set();
+ function visit(ap){const id=meshNodeId(ap);if(seen.has(id))return;seen.add(id);(children.get(id)||[]).forEach(visit);}
+ visit(controller);
+ liveAPs.filter(a=>!isControllerAp(a)&&!seen.has(meshNodeId(a))).forEach(a=>{a._orphan=true;if(!roots.includes(a))roots.push(a);});
+ const extras=roots.filter(a=>!(children.get(meshNodeId(controller))||[]).includes(a));
+ const extraHtml=extras.map(a=>renderMeshNode(a,liveAPs.indexOf(a),children)).join('');
+ const rootHtml=renderMeshNode(controller,liveAPs.indexOf(controller),children);
+ return `<div class="card mesh-tree"><div class="mesh-level root">${rootHtml}${extraHtml}</div><div class="mesh-legend"><span><i class="count"></i>Số Client</span><span><i class="eth"></i>Backhaul ETH</span><span><i class="wifi"></i>Backhaul Wi-Fi</span></div></div>`;
+}
+
+let meshArrowFrame=0;
+function stopMeshArrowAnimation(){
+ if(meshArrowFrame&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(meshArrowFrame);
+ meshArrowFrame=0;
+}
+function startMeshArrowAnimation(){
+ stopMeshArrowAnimation();
+ const mesh=document.getElementById('meshList');
+ if(!mesh||typeof requestAnimationFrame!=='function')return;
+ const routes=[];
+ mesh.querySelectorAll('.mesh-connectors').forEach(svg=>{
+  const pathEls=Array.from(svg.querySelectorAll('.mesh-flow-route'));
+  const arrows=Array.from(svg.querySelectorAll('.mesh-flow-arrow'));
+  arrows.forEach((arrow,i)=>{
+   const path=pathEls[i];
+   if(!path||typeof path.getTotalLength!=='function')return;
+   let length=0;try{length=path.getTotalLength();}catch(_){return;}
+   if(!Number.isFinite(length)||length<=0)return;
+   routes.push({svg,path,arrow,length,delay:routes.length*320});
+  });
+ });
+ if(!routes.length)return;
+ const duration=2100;
+ const start=performance.now();
+ const tick=(now)=>{
+  routes.forEach(route=>{
+   const rawElapsed=now-start-route.delay;
+   if(rawElapsed<0){route.arrow.style.opacity='0';return;}
+   const elapsed=rawElapsed;
+   const distance=((elapsed%duration)/duration)*route.length;
+   let p1,p2;
+   try{
+    p1=route.path.getPointAtLength(Math.max(0,distance-0.35));
+    p2=route.path.getPointAtLength(Math.min(route.length,distance+0.35));
+   }catch(_){return;}
+   // Convert the tangent to screen coordinates so arrows remain correctly
+   // oriented even though the SVG viewBox is stretched to the phone width.
+   const matrix=route.svg.getScreenCTM();
+   if(!matrix)return;
+   const a=route.svg.createSVGPoint(),b=route.svg.createSVGPoint();
+   a.x=p1.x;a.y=p1.y;b.x=p2.x;b.y=p2.y;
+   const sa=a.matrixTransform(matrix),sb=b.matrixTransform(matrix);
+   const angle=Math.atan2(sb.y-sa.y,sb.x-sa.x)*180/Math.PI;
+   const point=route.path.getPointAtLength(distance);
+   route.arrow.setAttribute('transform',`translate(${point.x} ${point.y}) rotate(${angle})`);
+   route.arrow.style.opacity='.98';
+  });
+  meshArrowFrame=requestAnimationFrame(tick);
+ };
+ meshArrowFrame=requestAnimationFrame(tick);
+}
+
 function renderData(data){
  lastData=data;const parsed=parseTables(data);liveAPs=parsed.aps;liveClients=parsed.clients;liveNodeData=Array.isArray(data.perNode)?data.perNode:[];
  const stamp=AndroidApp.getSnapshotTime();
@@ -79,16 +286,27 @@ function renderData(data){
  document.getElementById('controllerState').className=controller?'status':'small';
  document.getElementById('snapshotSummary').textContent=`Nguồn: API Topology và GetPopData (${data.url||'Router'}) · ${liveAPs.length} AP, ${agents.length} Agent, ${liveClients.length} Client · ${liveNodeData.length}/${liveAPs.length} AP đã đọc chi tiết · ${stamp}`;
  const nodes=document.getElementById('homeNodes');
- nodes.innerHTML=liveAPs.length?liveAPs.map((a,i)=>`<div class="node clickable" onclick="openNodeModal(${i})"><div class="ico">▣</div><div style="flex:1;min-width:0"><strong>${esc(a.name)}</strong><div class="muted">${esc(a.ip||'IP chưa có')} · ${esc(a.role||'Role chưa có')}</div><div class="small">Backhaul ${esc(a.backhaul||'—')} ${a.linkSpeed?'· Link '+esc(a.linkSpeed):''}</div></div><span class="status">Chi tiết ↗</span></div>`).join(''):'<div class="card empty">Không tìm thấy bảng ALL APs trong dữ liệu Topology. Không hiển thị dữ liệu mẫu.</div>';
- const mesh=document.getElementById('meshList');mesh.innerHTML=liveAPs.length?liveAPs.map((a,i)=>`<div class="card apcard" onclick="openNodeModal(${i})" style="margin-bottom:9px"><div class="row"><b>${esc(a.name)}</b><span class="status">Chi tiết ↗</span></div><div class="kv">IP ${esc(a.ip||'—')} · MAC ${esc(a.mac||'—')}</div><div class="kv">Backhaul ${esc(a.backhaul||'—')} · Link Speed ${esc(a.linkSpeed||'—')}</div></div>`).join(''):'<div class="empty">Chưa có dữ liệu AP.</div>';
- renderClients();const withRssi=liveClients.filter(c=>c.rssi&&/-\\d/.test(c.rssi));const avg=withRssi.length?Math.round(withRssi.reduce((sum,c)=>sum+parseFloat(c.rssi),0)/withRssi.length):null;
- document.getElementById('rssiCount').textContent=withRssi.length;document.getElementById('rssiAverage').textContent=avg===null?'—':avg+' dBm';
- const sig=document.getElementById('signalList');sig.innerHTML=withRssi.length?withRssi.map(c=>`<div class="device row"><b>${esc(c.name)}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi)}</span></div>`).join(''):'Chưa có dữ liệu RSSI trong bảng Client.';
- const badge=document.getElementById('liveBadge');badge.textContent='DỮ LIỆU ROUTER';badge.style.color='#4ade80';
+ nodes.innerHTML=liveAPs.length?liveAPs.map((a,i)=>`<div class="node clickable" onclick="openNodeModal(${i})"><img class="node-app-icon" src="app-node-icon.png" alt="ZTE Mesh Manager"><div style="flex:1;min-width:0"><strong>${esc(a.name)}</strong><div class="muted">${esc(a.ip||'IP chưa có')} · ${esc(a.role||'Role chưa có')}</div>${isControllerAp(a)?'':`<div class="small">Backhaul ${esc(displayBackhaul(a.backhaul))} ${a.linkSpeed?'· Link '+esc(displayLinkSpeed(a.linkSpeed)):''}</div>`}<div class="small" style="margin-top:4px;color:#60a5fa">▦ ${esc(nodeCountLabel(a))}</div></div><span class="status">Chi tiết ↗</span></div>`).join(''):'<div class="card empty">Không tìm thấy bảng ALL APs trong dữ liệu Topology. Không hiển thị dữ liệu mẫu.</div>';
+ const mesh=document.getElementById('meshList');mesh.innerHTML=liveAPs.length?renderMeshTree():'<div class="empty">Chưa có dữ liệu AP.</div>';startMeshArrowAnimation();
+ renderClients();
+ const badge=document.getElementById('liveBadge');const stale=!!(window.AndroidApp&&AndroidApp.isSnapshotStale());badge.textContent=stale?'DỮ LIỆU CŨ · KHÔNG TRỰC TUYẾN':'DỮ LIỆU ROUTER · ONLINE';badge.style.color=stale?'#fbbf24':'#4ade80';document.getElementById('liveNotice').style.color=stale?'#fbbf24':'#91a4bd';
 }
 function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.page===id));}
 document.querySelectorAll('.tab').forEach(x=>x.addEventListener('click',()=>showPage(x.dataset.page)));
 function openAdmin(){if(window.AndroidApp)AndroidApp.openAdmin();}
-function refreshSnapshot(){if(!window.AndroidApp)return;const raw=AndroidApp.getSnapshotJson(),time=AndroidApp.getSnapshotTime(),status=AndroidApp.getAutoStatus(),url=AndroidApp.getAutoUrl();document.getElementById('snapshotTime').textContent=time;document.getElementById('autoStatus').textContent=status+' · Lần đọc: '+time;document.getElementById('liveNotice').textContent=status+' · Lần đọc gần nhất: '+time+'.';const badge=document.getElementById('liveBadge');badge.textContent=raw?'SNAPSHOT ROUTER':'CHƯA CÓ DỮ LIỆU';badge.style.color=raw?'#4ade80':'#fbbf24';if(raw){try{const data=JSON.parse(raw);renderData(data);document.getElementById('snapshotTime').textContent=time;}catch(e){document.getElementById('snapshotSummary').textContent='Snapshot không đúng định dạng.';}}else{document.getElementById('snapshotSummary').textContent=url?'Đã kết nối Router nhưng chưa nhận được dữ liệu API.':'Hãy đăng nhập Router để bắt đầu đồng bộ Mesh.';}}
-setInterval(()=>{if(document.visibilityState==='visible')refreshSnapshot();},3000);window.addEventListener('pageshow',refreshSnapshot);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshSnapshot();});refreshSnapshot();
+
+function clearRenderedData(){
+ lastData=null;liveAPs=[];liveClients=[];liveNodeData=[];
+ const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+ set('controllerName','Chưa đọc được');set('controllerIp','IP —');set('heroControllerIp','Chưa đọc được từ Router');
+ set('apCount','— Access Point');set('clientCountHome','Chưa có dữ liệu Client');set('agentCountHome','— Agent');
+ set('controllerState','● Chưa đồng bộ');set('snapshotSummary','Chưa có dữ liệu Router.');
+ const home=document.getElementById('homeNodes');if(home)home.innerHTML='<div class="card empty">Đăng nhập Router để bắt đầu đồng bộ.</div>';
+ stopMeshArrowAnimation();const mesh=document.getElementById('meshList');if(mesh)mesh.innerHTML='<div class="empty">Chưa có dữ liệu AP.</div>';
+ const clients=document.getElementById('clientList');if(clients)clients.innerHTML='<div class="empty">Chưa có dữ liệu Client.</div>';
+ const allAp=document.getElementById('allApList');if(allAp)allAp.innerHTML='<div class="empty">Chưa có dữ liệu AP.</div>';
+ const modal=document.getElementById('modalNodeClients');if(modal)modal.innerHTML='';
+}
+function refreshSnapshot(){if(!window.AndroidApp)return;const raw=AndroidApp.getSnapshotJson(),time=AndroidApp.getSnapshotTime(),status=AndroidApp.getAutoStatus(),url=AndroidApp.getAutoUrl();document.getElementById('snapshotTime').textContent=time;document.getElementById('autoStatus').textContent=status+' · Lần đọc: '+time;document.getElementById('liveNotice').textContent=status+' · Lần đọc gần nhất: '+time+'.';const badge=document.getElementById('liveBadge');const stale=!!AndroidApp.isSnapshotStale();badge.textContent=raw?(stale?'DỮ LIỆU CŨ · KHÔNG TRỰC TUYẾN':'DỮ LIỆU ROUTER · ONLINE'):'CHƯA CÓ DỮ LIỆU';badge.style.color=raw?(stale?'#fbbf24':'#4ade80'):'#fbbf24';if(raw){try{const data=JSON.parse(raw);renderData(data);document.getElementById('snapshotTime').textContent=time;}catch(e){document.getElementById('snapshotSummary').textContent='Snapshot không đúng định dạng.';}}else{clearRenderedData();document.getElementById('snapshotSummary').textContent=status|| (url?'Đã kết nối Router nhưng chưa nhận được dữ liệu API.':'Hãy đăng nhập Router để bắt đầu đồng bộ Mesh.');}}
+loadRefreshInterval();setInterval(()=>{if(document.visibilityState==='visible')refreshSnapshot();},3000);window.addEventListener('pageshow',refreshSnapshot);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshSnapshot();});refreshSnapshot();
 </script></body></html>
