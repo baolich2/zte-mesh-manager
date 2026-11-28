@@ -1,4 +1,0 @@
-com.example.ztemeshmanager:mipmap/ic_launcher_round = 0x7f030001
-com.example.ztemeshmanager:mipmap/ic_launcher = 0x7f030000
-com.example.ztemeshmanager:drawable/ic_launcher_foreground = 0x7f020000
-com.example.ztemeshmanager:color/ic_launcher_background = 0x7f010000
