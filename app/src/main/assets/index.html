@@ -26,7 +26,7 @@
 .mesh-children>.mesh-branch{padding-top:0}
 .mesh-connectors{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;z-index:0;pointer-events:none}
 .mesh-connectors .mesh-connector-base{fill:none;stroke:#ff5252;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.mesh-flow-arrow{fill:#fff1f2;stroke:#ff5252;stroke-width:.8px;stroke-linejoin:round;opacity:.98;filter:drop-shadow(0 0 1px rgba(255,82,82,.55))}.mesh-tag.wireless{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;white-space:normal;line-height:1.2}.mesh-tag.wireless strong{font-weight:600}
+.mesh-flow-arrow{fill:#fff1f2;stroke:#ff5252;stroke-width:.8px;stroke-linejoin:round;opacity:0;filter:drop-shadow(0 0 1px rgba(255,82,82,.55))}.mesh-tag.wireless{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;white-space:normal;line-height:1.2}.mesh-tag.wireless strong{font-weight:600}
 .mesh-node{position:relative;min-width:0;min-height:148px;background:linear-gradient(155deg,#1d3049,#142033);border:1px solid #3a506e;border-radius:18px;padding:13px 8px 12px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;gap:4px;box-shadow:0 7px 18px #0003;cursor:pointer}
 .mesh-node:active{border-color:#60a5fa}
 .mesh-node-icon{width:52px;height:52px;object-fit:contain;border-radius:14px;background:#0b1728;padding:5px;margin-bottom:2px;flex:0 0 auto}
@@ -69,6 +69,30 @@
 .mesh-children.mesh-count-3>.mesh-branch .mesh-node-meta,.mesh-children.mesh-count-3>.mesh-branch .mesh-tag{font-size:9px}
 @media(max-width:360px){.mesh-tree{padding-left:6px;padding-right:6px}.mesh-level{column-gap:7px}.mesh-node{padding:10px 4px;min-height:138px}.mesh-node-icon{width:46px;height:46px}.mesh-node-title{font-size:12px}.mesh-node-meta,.mesh-tag{font-size:9px}.mesh-children.mesh-count-3>.mesh-branch .mesh-node-icon{width:36px;height:36px}}
 .language-gate{position:fixed;inset:0;z-index:100;background:#050a13eF;display:none;align-items:center;justify-content:center;padding:22px}.language-gate.show{display:flex}.language-panel{width:100%;max-width:460px;max-height:92vh;overflow:auto;background:#151f30;border:1px solid #34465f;border-radius:18px;padding:20px}.language-panel h2{font-size:20px;margin:8px 0}.language-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}.setup-router-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}.setup-choice{border:1px solid #3a506e;border-radius:12px;padding:12px 9px;background:#1c2a3e;color:#eef4ff;text-align:left;font-weight:700;min-height:82px}.setup-choice.selected{border:2px solid #38bdf8;background:#17334c}.setup-choice small{display:block;color:#a9bdd5;font-weight:400;margin-top:6px}.setup-continue{width:100%;margin-top:18px;border:0;border-radius:12px;padding:14px;background:#1676d2;color:white;font-size:16px;font-weight:800}.language-options button,.language-picker button{border:1px solid #3a506e;border-radius:12px;padding:13px;background:#1c2a3e;color:#eef4ff;text-align:left;font-weight:700}.language-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px}.language-picker button{padding:10px 5px;text-align:center;font-size:12px}.language-picker button.selected{border-color:#60a5fa;background:#203650}
+
+
+/* AMOLED: keep large OLED-emitting surfaces at absolute black. */
+html[data-theme="amoled"],html[data-theme="amoled"] body,
+html[data-theme="amoled"] .wrap,html[data-theme="amoled"] main,
+html[data-theme="amoled"] .page{background:#000!important}
+html[data-theme="amoled"] .card,
+html[data-theme="amoled"] .hero,
+html[data-theme="amoled"] .tabs,
+html[data-theme="amoled"] .modal,
+html[data-theme="amoled"] .modalback>div,
+html[data-theme="amoled"] .language-gate,
+html[data-theme="amoled"] .notice,
+html[data-theme="amoled"] .panel,
+html[data-theme="amoled"] .tree,
+html[data-theme="amoled"] .mesh-tree{background:#000!important;background-image:none!important;box-shadow:none!important}
+html[data-theme="amoled"] .hero{border-color:#242424!important}
+html[data-theme="amoled"] .card,
+html[data-theme="amoled"] .tabs{border-color:#242424!important}
+html[data-theme="amoled"] .action,
+html[data-theme="amoled"] button,
+html[data-theme="amoled"] select,
+html[data-theme="amoled"] input,
+html[data-theme="amoled"] textarea{background:#050505;color:#f5f5f5}
 </style>
 <style>
 html[data-theme="light"]{color-scheme:light;--bg:#f3f6fb;--panel:#fff;--panel2:#e8eef7;--line:#d2dbe8;--muted:#64748b;--blue:#2563eb;--green:#15803d;--orange:#a16207;--red:#e11d48}
@@ -124,7 +148,7 @@ html[data-theme="amoled"] .notice{background:#17130a;border-color:#665321}
 </section>
 <section id="mesh" class="page"><div class="section">Mesh · Access Points từ Router</div><div id="meshList" class="empty">Chưa có dữ liệu AP.</div></section>
 <section id="clients" class="page"><div class="section">Clients · thiết bị đang kết nối</div><div class="card"><input id="searchClient" placeholder="Tìm tên, IP hoặc MAC…" oninput="renderClients()"><div class="row" style="margin:10px 0"><select id="bandFilter" onchange="renderClients()"><option value="all">Tất cả băng tần</option><option value="2.4GHz">2.4GHz</option><option value="5GHz">5GHz</option></select><select id="upFilter" onchange="renderClients()"><option value="all">Tất cả AP</option><option value="controller">Controller</option><option value="agent">Agent</option></select></div><div class="row" style="margin:10px 0"><select id="connectionFilter" onchange="renderClients()"><option value="all">Mọi kết nối</option><option value="wifi">Wi-Fi</option><option value="lan">LAN</option></select><select id="rssiFilter" onchange="renderClients()"><option value="all">Mọi chất lượng RSSI</option><option value="good">Tốt (≥ -55 dBm)</option><option value="fair">Trung bình (-67 đến -56 dBm)</option><option value="weak">Yếu (< -67 dBm)</option><option value="unknown">Chưa có RSSI</option></select></div><div class="section" style="margin-top:18px">Clients theo từng AP</div><div id="clientList" class="empty">Chưa có dữ liệu Client.</div><div class="section" style="margin-top:22px">All AP</div><div class="card" id="allApList"><div class="empty">Chưa có dữ liệu AP.</div></div></div></section>
-<section id="tools" class="page"><div class="section">Công cụ</div><div class="card"><b>Kết nối Router (Native API)</b><p class="muted">Đăng nhập trực tiếp bằng API HTTPS. Dashboard đọc topology và từng node không dùng WebView quản trị.</p><button class="action" id="toolsLoginButton" onclick="openAdmin()">Đăng nhập / quản lý phiên</button><button class="action secondary" onclick="AndroidApp.selectRouterModel()">Chọn loại Router</button><button class="action secondary" onclick="AndroidApp.refreshNow()">Cập nhật ngay</button><button class="action secondary" id="toolsLogoutButton" onclick="AndroidApp.logout()">Đăng xuất Router</button><p class="small" id="autoStatus">Tự động đồng bộ mỗi 180 giây khi ứng dụng ở foreground.</p></div><div class="card" style="margin-top:10px"><b>Ngôn ngữ / Language</b><div class="language-picker"><button type="button" data-lang="vi" onclick="chooseLanguage('vi')">🇻🇳 VI</button><button type="button" data-lang="en" onclick="chooseLanguage('en')">🇬🇧 EN</button><button type="button" data-lang="zh-CN" onclick="chooseLanguage('zh-CN')">🇨🇳 中文</button></div><p class="small">Toàn bộ giao diện được dịch; thuật ngữ kỹ thuật giữ nguyên bằng tiếng Anh.</p></div><div class="card" style="margin-top:10px"><b>Giao diện / Appearance</b><p class="small" style="margin:6px 0">Chọn giao diện sáng, tối hoặc đen AMOLED.</p><select id="themeSelect" onchange="setTheme(this.value)"><option value="light">Sáng / Light</option><option value="dark">Tối / Dark</option><option value="amoled">Đen AMOLED / AMOLED black</option></select></div><div class="card" style="margin-top:10px"><b>Dự án trên GitHub</b><p class="small" style="margin:6px 0">Theo dõi mã nguồn, cập nhật và các phiên bản mới của ZTE Mesh Manager.</p><button class="action secondary" onclick="AndroidApp.openProjectGithub()">Mở GitHub ↗</button></div></section>
+<section id="tools" class="page"><div class="section">Công cụ</div><div class="card"><b>Kết nối Router (Native API)</b><p class="muted">Đăng nhập trực tiếp bằng API HTTPS. Dashboard đọc topology và từng node không dùng WebView quản trị.</p><button class="action" id="toolsLoginButton" onclick="openAdmin()">Đăng nhập / quản lý phiên</button><button class="action secondary" onclick="AndroidApp.selectRouterModel()">Chọn loại Router</button><button class="action secondary" onclick="AndroidApp.refreshNow()">Cập nhật ngay</button><button class="action secondary" onclick="AndroidApp.rebootRouter()">↻ Khởi động lại Router</button><button class="action secondary" id="toolsLogoutButton" onclick="AndroidApp.logout()">Đăng xuất Router</button><p class="small" id="autoStatus">Tự động đồng bộ mỗi 180 giây khi ứng dụng ở foreground.</p></div><div class="card" style="margin-top:10px"><div class="row" style="justify-content:space-between;align-items:center"><b>Router Information</b></div><div id="routerInfoContent" class="small" style="margin-top:10px">Đăng nhập Router để đọc thông tin thiết bị và hệ thống.</div></div><div class="card" style="margin-top:10px"><b>Ngôn ngữ / Language</b><div class="language-picker"><button type="button" data-lang="vi" onclick="chooseLanguage('vi')">🇻🇳 VI</button><button type="button" data-lang="en" onclick="chooseLanguage('en')">🇬🇧 EN</button><button type="button" data-lang="zh-CN" onclick="chooseLanguage('zh-CN')">🇨🇳 中文</button></div><p class="small">Toàn bộ giao diện được dịch; thuật ngữ kỹ thuật giữ nguyên bằng tiếng Anh.</p></div><div class="card" style="margin-top:10px"><b>Giao diện / Appearance</b><p class="small" style="margin:6px 0">Chọn giao diện sáng, tối hoặc đen AMOLED.</p><select id="themeSelect" onchange="setTheme(this.value)"><option value="light">Sáng / Light</option><option value="dark">Tối / Dark</option><option value="amoled">Đen AMOLED / AMOLED black</option></select></div><div class="card" style="margin-top:10px"><b>Dự án trên GitHub</b><p class="small" style="margin:6px 0">Theo dõi mã nguồn, cập nhật và các phiên bản mới của ZTE Mesh Manager.</p><button class="action secondary" onclick="AndroidApp.openProjectGithub()">Mở GitHub ↗</button></div></section>
 </main>
 <div class="modalback" id="nodeModal" onclick="if(event.target===this)closeNodeModal()"><div class="modal"><div class="modalhead"><div><div class="eyebrow">NODE INFORMATION</div><h2 id="modalNodeName" style="margin:4px 0 0;font-size:20px">Access Point</h2></div><button class="closebtn" onclick="closeNodeModal()">×</button></div><div id="modalNodeInfo"></div><div class="section" style="margin-top:16px">Thiết bị đang kết nối</div><div id="modalNodeClients" class="empty">Chưa có dữ liệu chi tiết của Node.</div><div class="small" id="modalNodeNote" style="margin-top:10px"></div></div></div>
 <div class="language-gate" id="languageGate" role="dialog" aria-modal="true" aria-labelledby="languageTitle"><div class="language-panel">
@@ -151,7 +175,18 @@ let liveAPs=[],liveClients=[],liveNodeData=[],lastData=null;
 const norm=s=>(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/\s+/g,' ').trim();
 function displayBand(value){const v=String(value??'').trim();return /^5g$/i.test(v)?'5GHz':v.replace(/\b5G\b/gi,'5GHz');}
 function displayLinkSpeed(value){const v=String(value??'').trim();return v&&Number(v)>0?v+' Mbps':(v||'—');}
-function displayBackhaul(value){return displayBand(value||'—');}
+function displayBackhaul(value){return displayBand(value||'—');} function displayWifiBand(value){const band=displayBand(value||'—');return band==='—'?'—':'Wi-Fi '+band;}
+// AssocTime from the Node detail popup is an association duration in seconds.
+// Keep hours unbounded so connections longer than 24 hours remain readable.
+function formatAssocTime(raw){
+ const value=String(raw??'').trim();
+ if(!value)return '—';
+ if(!/^\d+(?:\.\d+)?$/.test(value))return value;
+ const total=Math.floor(Number(value));
+ if(!Number.isFinite(total)||total<0)return '—';
+ const hours=Math.floor(total/3600),minutes=Math.floor((total%3600)/60),seconds=total%60;
+ return `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+}
 function isControllerAp(a){return norm(a?.role)==='controller'||norm(a?.name).includes('controller');}
 function saveRefreshInterval(value){const n=Number.parseInt(value,10),input=document.getElementById('refreshIntervalInput');if(!Number.isInteger(n)||n<10||n>3600){if(input)input.value=window.AndroidApp?AndroidApp.getRefreshIntervalSeconds():180;if(window.AndroidApp)AndroidApp.showMessage('Chu kỳ hợp lệ từ 10 đến 3600 giây.');return;}if(window.AndroidApp){const ok=AndroidApp.setRefreshIntervalSeconds(n);if(ok){input.value=String(n);AndroidApp.showMessage('Đã lưu chu kỳ tự động: '+n+' giây.');}}}
 function loadRefreshInterval(){const input=document.getElementById('refreshIntervalInput');if(input&&window.AndroidApp)input.value=String(AndroidApp.getRefreshIntervalSeconds());}
@@ -171,9 +206,9 @@ function renderClients(){
  const groups=liveAPs.map(ap=>{const detail=nodeDetailFor(ap);let rows=parseNodeClients(detail);if(!rows.length){rows=liveClients.filter(c=>norm(c.upstream)===norm(ap.name));}
  rows=rows.filter(c=>{const searchable=norm([c.name,c.ip,c.mac,c.mode,c.upstream].join(' '));const rv=Number.parseFloat(String(c.rssi||'').replace(/[^-0-9.]/g,''));const hasRssi=Number.isFinite(rv);const signal= !hasRssi?'unknown':rv>=-55?'good':rv>=-67?'fair':'weak';return searchable.includes(q)&&(b==='all'||c.band===b)&&(u==='all'||(isControllerAp(ap)?u==='controller':u==='agent'))&&(connection==='all'||(c.connectionType||'unknown')===connection)&&(quality==='all'||signal===quality);});
  return {ap,rows};}).filter(g=>g.rows.length||(!q&&b==='all'&&u==='all'&&connection==='all'&&quality==='all'));
- if(host){host.innerHTML=groups.length?groups.map(g=>{return `<div class="tree-ap"><div class="tree-ap-head"><img class="tree-ap-icon" src="app-node-icon.png" alt=""><span style="flex:1;min-width:0"><b>${esc(g.ap.name||'Access Point')}</b><span class="small" style="display:block">${esc(isControllerAp(g.ap)?'Controller':'Agent')} · ${esc(g.ap.ip||'IP —')}</span></span><span class="status">${g.rows.length} Client</span></div><div class="tree-children">${g.rows.length?g.rows.map(c=>`<div class="tree-client"><div class="row"><b>${esc(c.name||'Thiết bị')}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi||'—')}</span></div><div class="small">${esc(c.ip||'IP —')} · ${esc(displayBand(c.band||'—'))} · ${esc(c.mode||'')}</div><div class="kv">MAC ${esc(c.mac||'—')} · ${esc(c.time||'')}</div><div class="kv">↓ ${esc(c.down||'—')} · ↑ ${esc(c.up||'—')}</div></div>`).join(''):`<div class="empty">${isConfirmedEmptyNode(nodeDetailFor(g.ap))?'Không có Client đang kết nối.':'Chưa có Client đọc được cho AP này.'}</div>`}</div></div>`}).join(''):'<div class="empty">Không có Client phù hợp bộ lọc.</div>'; }
+ if(host){host.innerHTML=groups.length?groups.map(g=>{return `<div class="tree-ap"><div class="tree-ap-head"><img class="tree-ap-icon" src="app-node-icon.png" alt=""><span style="flex:1;min-width:0"><b>${esc(g.ap.name||'Access Point')}</b><span class="small" style="display:block">${esc(isControllerAp(g.ap)?'Controller':'Agent')} · ${esc(g.ap.ip||'IP —')}</span></span><span class="status">${g.rows.length} Client</span></div><div class="tree-children">${g.rows.length?g.rows.map(c=>`<div class="tree-client"><div class="row"><b>${esc(c.name||'Thiết bị')}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi||'—')}</span></div><div class="small">${esc(c.ip||'IP —')} · ${esc(displayWifiBand(c.band||'—'))} · ${esc(c.mode||'')}</div><div class="kv">MAC ${esc(c.mac||'—')} · ${esc(formatAssocTime(c.time))}</div><div class="kv">↓ ${esc(c.down||'—')} · ↑ ${esc(c.up||'—')}</div></div>`).join(''):`<div class="empty">${isConfirmedEmptyNode(nodeDetailFor(g.ap))?'Không có Client đang kết nối.':'Chưa có Client đọc được cho AP này.'}</div>`}</div></div>`}).join(''):'<div class="empty">Không có Client phù hợp bộ lọc.</div>'; }
 
- const allAp=document.getElementById('allApList');if(allAp){allAp.innerHTML=liveAPs.length?`<div class="all-ap-row all-ap-head"><span>Tên AP / IP</span><span>Vai trò</span><span>Backhaul</span><span>RSSI</span></div>`+liveAPs.map(a=>{const wireless=!isControllerAp(a)&&!norm(a.backhaul).includes('eth');const r=wireless&&/^-?\d+(?:\.\d+)?$/.test(String(a.rssi||''))&&Number(a.rssi)<0?a.rssi+' dBm':'—';return `<div class="all-ap-row"><span><b>${esc(a.name||'Access Point')}</b><br><span class="small">${esc(a.ip||'IP —')}</span></span><span>${esc(a.role|| (isControllerAp(a)?'Controller':'Agent'))}</span><span>${esc(isControllerAp(a)?'—':displayBackhaul(a.backhaul))}</span><span>${esc(r)}</span><span class="all-ap-sub">MAC ${esc(a.mac||'—')}</span></div>`}).join(''):'<div class="empty">Chưa có dữ liệu AP.</div>'; }
+ const allAp=document.getElementById('allApList');if(allAp){allAp.innerHTML=liveAPs.length?`<div class="all-ap-row all-ap-head"><span>Tên AP / IP</span><span>Vai trò</span><span>Backhaul</span><span>RSSI</span></div>`+liveAPs.map(a=>{const wireless=!isControllerAp(a)&&!norm(a.backhaul).includes('eth');const r=wireless&&/^-?\d+(?:\.\d+)?$/.test(String(a.rssi||''))&&Number(a.rssi)<0?a.rssi+' dBm':'—';return `<div class="all-ap-row"><span><b>${esc(a.name||'Access Point')}</b><br><span class="small">${esc(a.ip||'IP —')}</span></span><span>${esc(a.role|| (isControllerAp(a)?'Controller':'Agent'))}</span><span>${esc(isControllerAp(a)?'—':(norm(a.backhaul).includes('eth')?'Cáp LAN':displayWifiBand(a.backhaul)))}</span><span>${esc(r)}</span><span class="all-ap-sub">MAC ${esc(a.mac||'—')}</span></div>`}).join(''):'<div class="empty">Chưa có dữ liệu AP.</div>'; }
 
 }
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -224,12 +259,12 @@ function reloadOverview(){
 function openNodeModal(index){
  const a=liveAPs[index]; if(!a)return;
  document.getElementById('modalNodeName').textContent=a.name||'Access Point';
- const controllerNode=isControllerAp(a);const infoCells=[['IP',a.ip],['MAC',a.mac],['Role',a.role],...(controllerNode?[]:[['Backhaul',displayBackhaul(a.backhaul)],['Link Speed',displayLinkSpeed(a.linkSpeed)]]),['Operate area',a.area]];document.getElementById('modalNodeInfo').innerHTML=`<div class="infogrid">${infoCells.map(([label,value])=>`<div class="infocell"><small>${esc(label)}</small><b>${esc(value||'—')}</b></div>`).join('')}</div>`;
+ const controllerNode=isControllerAp(a);const infoCells=[['IP',a.ip],['MAC',a.mac],['Role',a.role],...(controllerNode?[]:[['Backhaul',(String(a.backhaul||'').toLowerCase().includes('eth')?'Cáp LAN':'Wi-Fi '+displayBackhaul(a.backhaul))],['Link Speed',displayLinkSpeed(a.linkSpeed)]]),['Operate area',a.area]];document.getElementById('modalNodeInfo').innerHTML=`<div class="infogrid">${infoCells.map(([label,value])=>`<div class="infocell"><small>${esc(label)}</small><b>${esc(value||'—')}</b></div>`).join('')}</div>`;
  const detail=nodeDetailFor(a);
  const rows=parseNodeClients(detail);
  const host=document.getElementById('modalNodeClients');
  if(rows.length){
-  host.innerHTML=`<div class="small" style="margin-bottom:8px">${rows.length} thiết bị · dữ liệu đọc từ popup chi tiết của Node</div>`+rows.map(c=>`<div class="clientrow"><div class="row"><b>${esc(c.name)}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi||'—')}</span></div><div class="small">${esc(displayBand(c.band||'—'))} · ${esc(c.mode||'')}</div><div class="kv">IP ${esc(c.ip||'—')} · MAC ${esc(c.mac||'—')}</div><div class="kv">↓ ${esc(c.down||'—')} · ↑ ${esc(c.up||'—')} · ${esc(c.time||'')}</div></div>`).join('');
+  host.innerHTML=`<div class="small" style="margin-bottom:8px">${rows.length} thiết bị · dữ liệu đọc từ popup chi tiết của Node</div>`+rows.map(c=>`<div class="clientrow"><div class="row"><b>${esc(c.name)}</b><span class="signal ${signalClass(c.rssi)}">${esc(c.rssi||'—')}</span></div><div class="small">${esc(displayWifiBand(c.band||'—'))} · ${esc(c.mode||'')}</div><div class="kv">IP ${esc(c.ip||'—')} · MAC ${esc(c.mac||'—')}</div><div class="kv">↓ ${esc(c.down||'—')} · ↑ ${esc(c.up||'—')} · ${esc(formatAssocTime(c.time))}</div></div>`).join('');
   document.getElementById('modalNodeNote').textContent='Dữ liệu được đọc riêng từ popup chi tiết của AP này.';
  }else{
   const confirmedEmpty=isConfirmedEmptyNode(detail);
@@ -240,6 +275,28 @@ function openNodeModal(index){
  document.getElementById('nodeModal').classList.add('show');
 }
 function closeNodeModal(){document.getElementById('nodeModal').classList.remove('show');}
+
+// Allow dismissing the Node sheet with an intentional downward swipe while
+// at its top edge. Normal scrolling inside the sheet remains unchanged.
+(function bindNodeModalSwipeDismiss(){
+ const modal=document.querySelector('#nodeModal .modal');
+ if(!modal || modal.dataset.swipeDismissBound==='1')return;
+ modal.dataset.swipeDismissBound='1';
+ let startY=0, startScrollTop=0, tracking=false;
+ modal.addEventListener('touchstart',e=>{
+   if(e.touches.length!==1){tracking=false;return;}
+   startY=e.touches[0].clientY;
+   startScrollTop=modal.scrollTop;
+   tracking=true;
+ },{passive:true});
+ modal.addEventListener('touchend',e=>{
+   if(!tracking || !e.changedTouches.length){tracking=false;return;}
+   const deltaY=e.changedTouches[0].clientY-startY;
+   if(startScrollTop<=2 && deltaY > 85) closeNodeModal();
+   tracking=false;
+ },{passive:true});
+ modal.addEventListener('touchcancel',()=>{tracking=false;},{passive:true});
+})();
 
 function meshNodeId(ap){return isControllerAp(ap)?'MESH.CONTROLLER':String(ap.role||'').trim();}
 function meshParentId(ap){return String(ap.parent||'').trim();}
@@ -303,7 +360,7 @@ function stopMeshArrowAnimation(){
 }
 function buildMeshConnectorGeometry(){
  const mesh=document.getElementById('meshList');
- if(!mesh)return;
+ if(!mesh || !document.getElementById('mesh').classList.contains('active') || mesh.getClientRects().length===0 || mesh.clientWidth<2)return;
  const NS='http://www.w3.org/2000/svg';
  mesh.querySelectorAll('.mesh-children').forEach(group=>{
   const svg=group.querySelector(':scope > .mesh-connectors');
@@ -348,16 +405,17 @@ function buildMeshConnectorGeometry(){
    const row=rowBus.find(r=>r.cards.includes(card));if(!row)return;
    const d=`M ${parentX} 0 V ${row.y} H ${card.x} V ${Math.max(row.y+1,card.top)}`;
    const route=document.createElementNS(NS,'path');route.setAttribute('class','mesh-flow-route');route.setAttribute('d',d);route.setAttribute('fill','none');route.setAttribute('stroke','none');svg.appendChild(route);
-   const arrow=document.createElementNS(NS,'polygon');arrow.setAttribute('class','mesh-flow-arrow');arrow.setAttribute('data-flow-index','0');arrow.setAttribute('points','0,-2.6 6,0 0,2.6 1.4,0');svg.appendChild(arrow);
+   const arrow=document.createElementNS(NS,'polygon');arrow.setAttribute('class','mesh-flow-arrow');arrow.setAttribute('data-flow-index','0');arrow.setAttribute('points','0,-2.6 6,0 0,2.6 1.4,0');arrow.style.opacity='0';arrow.setAttribute('visibility','hidden');svg.appendChild(arrow);
   });
  });
 }
-function startMeshArrowAnimation(){
+function startMeshArrowAnimationNow(){
  stopMeshArrowAnimation();
  const mesh=document.getElementById('meshList');
- if(!mesh||typeof requestAnimationFrame!=='function')return;
+ if(!mesh || !document.getElementById('mesh').classList.contains('active') || mesh.getClientRects().length===0 || mesh.clientWidth<2 || typeof requestAnimationFrame!=='function')return;
  buildMeshConnectorGeometry();
  const routes=[];
+ mesh.querySelectorAll('.mesh-flow-arrow').forEach(arrow=>{arrow.style.opacity='0';arrow.setAttribute('visibility','hidden');});
  mesh.querySelectorAll('.mesh-connectors').forEach(svg=>{
   const pathEls=Array.from(svg.querySelectorAll('.mesh-flow-route'));
   const arrows=Array.from(svg.querySelectorAll('.mesh-flow-arrow'));
@@ -366,7 +424,7 @@ function startMeshArrowAnimation(){
    if(!path||typeof path.getTotalLength!=='function')return;
    let length=0;try{length=path.getTotalLength();}catch(_){return;}
    if(!Number.isFinite(length)||length<=0)return;
-   routes.push({svg,path,arrow,length,delay:0});
+   routes.push({svg,path,arrow,length,delay:routes.length*180});
   });
  });
  if(!routes.length)return;
@@ -388,6 +446,7 @@ function startMeshArrowAnimation(){
    const angle=Math.atan2(sb.y-sa.y,sb.x-sa.x)*180/Math.PI;
    const point=route.path.getPointAtLength(distance);
    route.arrow.setAttribute('transform',`translate(${point.x} ${point.y}) rotate(${angle})`);
+   route.arrow.setAttribute('visibility','visible');
    route.arrow.style.opacity='.98';
   });
   meshArrowFrame=requestAnimationFrame(tick);
@@ -395,10 +454,34 @@ function startMeshArrowAnimation(){
  meshArrowFrame=requestAnimationFrame(tick);
 }
 
-let meshResizeTimer=0;
+let meshLayoutFrame1=0,meshLayoutFrame2=0,meshLayoutObserver=null,meshResizeTimer=0;
+function scheduleMeshArrowLayout(){
+ if(typeof requestAnimationFrame!=='function')return;
+ if(meshLayoutFrame1)cancelAnimationFrame(meshLayoutFrame1);
+ if(meshLayoutFrame2)cancelAnimationFrame(meshLayoutFrame2);
+ meshLayoutFrame1=requestAnimationFrame(()=>{
+  meshLayoutFrame1=0;
+  meshLayoutFrame2=requestAnimationFrame(()=>{
+   meshLayoutFrame2=0;
+   const mesh=document.getElementById('meshList');
+   const page=document.getElementById('mesh');
+   if(!mesh||!page||!page.classList.contains('active')||mesh.getClientRects().length===0||mesh.clientWidth<2)return;
+   startMeshArrowAnimationNow();
+  });
+ });
+}
+function observeMeshLayout(){
+ const mesh=document.getElementById('meshList');
+ if(!mesh||typeof ResizeObserver==='undefined')return;
+ if(meshLayoutObserver)meshLayoutObserver.disconnect();
+ meshLayoutObserver=new ResizeObserver(()=>scheduleMeshArrowLayout());
+ const tree=mesh.querySelector('.mesh-tree');
+ if(tree)meshLayoutObserver.observe(tree);
+ mesh.querySelectorAll('.mesh-node').forEach(node=>meshLayoutObserver.observe(node));
+}
 window.addEventListener('resize',()=>{
  clearTimeout(meshResizeTimer);
- meshResizeTimer=setTimeout(()=>startMeshArrowAnimation(),120);
+ meshResizeTimer=setTimeout(()=>scheduleMeshArrowLayout(),80);
 });
 
 function renderData(data){
@@ -416,24 +499,12 @@ function renderData(data){
  document.getElementById('controllerState').className=controller?'status':'small';
  document.getElementById('snapshotSummary').textContent=`Nguồn: API Topology và GetPopData (${data.url||'Router'}) · ${liveAPs.length} AP, ${agents.length} Agent, ${liveClients.length} Client · ${liveNodeData.length}/${liveAPs.length} AP đã đọc chi tiết · ${stamp}`;
  const nodes=document.getElementById('homeNodes');
- nodes.innerHTML=liveAPs.length?liveAPs.map((a,i)=>`<div class="node clickable" onclick="openNodeModal(${i})"><img class="node-app-icon" src="app-node-icon.png" alt="ZTE Mesh Manager"><div style="flex:1;min-width:0"><strong>${esc(a.name)}</strong><div class="muted">${esc(a.ip||'IP chưa có')} · ${esc(a.role||'Role chưa có')}</div>${isControllerAp(a)?'':`<div class="small">Backhaul ${esc(displayBackhaul(a.backhaul))} ${a.linkSpeed?'· Link '+esc(displayLinkSpeed(a.linkSpeed)):''}</div>`}<div class="small" style="margin-top:4px;color:#60a5fa">▦ ${esc(nodeCountLabel(a))}</div></div><span class="status">Chi tiết ↗</span></div>`).join(''):'<div class="card empty">Không tìm thấy bảng ALL APs trong dữ liệu Topology. Không hiển thị dữ liệu mẫu.</div>';
- const mesh=document.getElementById('meshList');mesh.innerHTML=liveAPs.length?renderMeshTree():'<div class="empty">Chưa có dữ liệu AP.</div>';
- // The Topology page may be hidden while snapshots arrive. Do not measure SVG
- // connector geometry until the page is visible; hidden elements report zero sizes.
- if(document.getElementById('mesh')?.classList.contains('active'))startMeshArrowAnimation();else stopMeshArrowAnimation();
+ nodes.innerHTML=liveAPs.length?liveAPs.map((a,i)=>`<div class="node clickable" onclick="openNodeModal(${i})"><img class="node-app-icon" src="app-node-icon.png" alt="ZTE Mesh Manager"><div style="flex:1;min-width:0"><strong>${esc(a.name)}</strong><div class="muted">${esc(a.ip||'IP chưa có')} · ${esc(a.role||'Role chưa có')}</div>${isControllerAp(a)?'':`<div class="small">Backhaul ${esc(norm(a.backhaul).includes('eth')?'Cáp LAN':displayWifiBand(a.backhaul))} ${a.linkSpeed?'· Link '+esc(displayLinkSpeed(a.linkSpeed)):''}</div>`}<div class="small" style="margin-top:4px;color:#60a5fa">▦ ${esc(nodeCountLabel(a))}</div></div><span class="status">Chi tiết ↗</span></div>`).join(''):'<div class="card empty">Không tìm thấy bảng ALL APs trong dữ liệu Topology. Không hiển thị dữ liệu mẫu.</div>';
+ const mesh=document.getElementById('meshList');mesh.innerHTML=liveAPs.length?renderMeshTree():'<div class="empty">Chưa có dữ liệu AP.</div>';observeMeshLayout();scheduleMeshArrowLayout();
  renderClients();
  const badge=document.getElementById('liveBadge');const stale=!!(window.AndroidApp&&AndroidApp.isSnapshotStale());badge.textContent=stale?'DỮ LIỆU CŨ · KHÔNG TRỰC TUYẾN':'DỮ LIỆU ROUTER · ONLINE';badge.style.color=stale?'#fbbf24':'#4ade80';document.getElementById('liveNotice').style.color=stale?'#fbbf24':'#91a4bd';
 }
-function showPage(id){
- document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===id));
- document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.page===id));
- if(id==='mesh'&&typeof requestAnimationFrame==='function'){
-  // Wait for the browser to apply display/layout before measuring node cards.
-  // Two frames avoid the first-open 0x0 SVG geometry and render connectors immediately.
-  stopMeshArrowAnimation();
-  requestAnimationFrame(()=>requestAnimationFrame(()=>startMeshArrowAnimation()));
- }else if(id!=='mesh'){stopMeshArrowAnimation();}
-}
+function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.page===id));if(id==='mesh')scheduleMeshArrowLayout();else stopMeshArrowAnimation();}
 document.querySelectorAll('.tab').forEach(x=>x.addEventListener('click',()=>showPage(x.dataset.page)));
 function openAdmin(){if(window.AndroidApp)AndroidApp.openAdmin();}
 function updateAuthControls(){let logged=false;try{logged=!!(window.AndroidApp&&AndroidApp.isLoggedIn&&AndroidApp.isLoggedIn());}catch(_){}const homeLogin=document.getElementById('homeLoginButton'),toolsLogin=document.getElementById('toolsLoginButton'),toolsLogout=document.getElementById('toolsLogoutButton');if(homeLogin)homeLogin.hidden=logged;if(toolsLogin)toolsLogin.hidden=logged;if(toolsLogout)toolsLogout.hidden=!logged;}
@@ -455,9 +526,62 @@ function updateRouterIdentity(){
  if(!el)return;
  let model='HV3601P v9.3';
  try{if(window.AndroidApp&&AndroidApp.getRouterDisplayName)model=AndroidApp.getRouterDisplayName()||model;}catch(_){}
- el.textContent=model+' · Controller mode';
+ let suffix='';
+ try{
+  const raw=window.AndroidApp&&AndroidApp.getRouterInfoJson?AndroidApp.getRouterInfoJson():'';
+  const info=raw?JSON.parse(raw):null;
+  if(info&&!info.error){
+   if(String(model).toUpperCase().includes('HV3601P')){
+    if(info.workMode) suffix=String(info.workMode);
+   }else if(String(model).toUpperCase().includes('F6601P')){
+    if(info.softwareVersion) suffix=String(info.softwareVersion);
+   }
+  }
+ }catch(_){}
+ // Do not show a guessed mode while Router Information is unavailable.
+ el.innerHTML=esc(model)+(suffix?' · <span data-no-translate>'+esc(suffix)+'</span>':'');
 }
-function refreshSnapshot(){if(!window.AndroidApp)return;updateAuthControls();const raw=AndroidApp.getSnapshotJson(),time=AndroidApp.getSnapshotTime(),status=AndroidApp.getAutoStatus(),url=AndroidApp.getAutoUrl();let lang='vi';try{lang=localStorage.getItem('zmm.language')||'vi'}catch(_){}document.getElementById('snapshotTime').textContent=time;document.getElementById('autoStatus').textContent=localizeAutoStatus(status,time,'auto',lang);document.getElementById('liveNotice').textContent=localizeAutoStatus(status,time,'notice',lang);const badge=document.getElementById('liveBadge');const stale=!!AndroidApp.isSnapshotStale();badge.textContent=translateTextValue(raw?(stale?'DỮ LIỆU CŨ · KHÔNG TRỰC TUYẾN':'DỮ LIỆU ROUTER · ONLINE'):'CHƯA CÓ DỮ LIỆU',lang);badge.style.color=raw?(stale?'#fbbf24':'#4ade80'):'#fbbf24';if(raw){try{const data=JSON.parse(raw);renderData(data);const summary=document.getElementById('snapshotSummary');if(summary){const l=localStorage.getItem('zmm.language')||'vi';summary.textContent=translateTextValue(summary.textContent,l);}document.getElementById('snapshotTime').textContent=time;}catch(e){document.getElementById('snapshotSummary').textContent='Snapshot không đúng định dạng.';}}else{clearRenderedData();document.getElementById('snapshotSummary').textContent=translateTextValue(status|| (url?'Đã kết nối Router nhưng chưa nhận được dữ liệu API.':'Hãy đăng nhập Router để bắt đầu đồng bộ Mesh.'),lang);}}
+
+function formatUptime(raw){
+ const n=Number(raw);if(!Number.isFinite(n)||n<0)return '—';
+ const days=Math.floor(n/86400),hours=Math.floor((n%86400)/3600),mins=Math.floor((n%3600)/60),secs=Math.floor(n%60);
+ return `${days}d ${String(hours).padStart(2,'0')}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
+}
+function infoRow(label,value,noTranslate=false){
+ if(value===undefined||value===null||String(value).trim()==='')return '';
+ const lang=(()=>{try{return localStorage.getItem('zmm.language')||'vi'}catch(_){return 'vi'}})();
+ const labels={
+  'Model':['Model','型号'],'Serial Number':['Số serial','序列号'],
+  'Hardware Version':['Phiên bản phần cứng','硬件版本'],'Software Version':['Phiên bản phần mềm','软件版本'],
+  'Batch No.':['Batch No.','批次号'],'Boot Version':['Phiên bản Boot','Boot 版本'],
+  'Manufacturer':['Nhà sản xuất','制造商'],'Work Mode':['Chế độ hoạt động','工作模式'],'Version Date':['Ngày phiên bản','版本日期'],
+  'CPU Usage':['Mức sử dụng CPU','CPU 使用率'],'Memory Usage':['Mức sử dụng bộ nhớ','内存使用率'],
+  'System Up Time':['Thời gian hoạt động','系统运行时间']
+ };
+ const shown=labels[label]?(lang==='en'?label:labels[label][lang==='zh-CN'?1:0]):label;
+ return `<div class="row" style="justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)"><span class="muted">${esc(shown)}</span><b ${noTranslate?'data-no-translate':''} style="text-align:right;overflow-wrap:anywhere">${esc(value)}</b></div>`;
+}
+function renderRouterInfo(){
+ const el=document.getElementById('routerInfoContent');if(!el||!window.AndroidApp)return;
+ let raw='';try{raw=AndroidApp.getRouterInfoJson?AndroidApp.getRouterInfoJson():''}catch(_){}
+ if(!raw){el.textContent='Chưa có dữ liệu Router Information.';return;}
+ let d;try{d=JSON.parse(raw)}catch(_){el.textContent='Router Information không đúng định dạng.';return;}
+ if(d.error){el.textContent='Không đọc được Router Information: '+d.error;return;}
+ const rows=[
+  infoRow('Model',d.model),infoRow('Serial Number',d.serialNumber),
+  infoRow('Hardware Version',d.hardwareVersion),infoRow('Software Version',d.softwareVersion),
+  infoRow('Batch No.',d.softwareVersionExtent),infoRow('Boot Version',d.bootVersion),
+  infoRow('Manufacturer',d.manufacturer),infoRow('Work Mode',d.workMode,true),infoRow('Version Date',d.versionDate),
+  infoRow('CPU Usage',d.cpuUsage!==undefined&&d.cpuUsage!==''?d.cpuUsage+'%':''),
+  ...(Array.isArray(d.cpuCores)?d.cpuCores.map(c=>infoRow(((()=>{try{return localStorage.getItem('zmm.language')==='vi'?'CPU lõi ':'CPU Core '}catch(_){return 'CPU Core '}})())+c.core,c.usage+'%')):[]),
+  infoRow('Memory Usage',d.memoryUsage!==undefined&&d.memoryUsage!==''?d.memoryUsage+'%':''),
+  infoRow('System Up Time',formatUptime(d.uptimeSeconds))
+ ].filter(Boolean).join('');
+ const warnings=Array.isArray(d.warnings)?d.warnings.filter(Boolean):[];
+ el.innerHTML=(rows||'Router chưa trả về trường thông tin nào.')+
+  (warnings.length?'<div class="small muted" style="margin-top:8px">Ghi chú: '+warnings.map(esc).join(' · ')+'</div>':'');
+}
+function refreshSnapshot(){if(!window.AndroidApp)return;renderRouterInfo();updateRouterIdentity();updateAuthControls();const raw=AndroidApp.getSnapshotJson(),time=AndroidApp.getSnapshotTime(),status=AndroidApp.getAutoStatus(),url=AndroidApp.getAutoUrl();let lang='vi';try{lang=localStorage.getItem('zmm.language')||'vi'}catch(_){}document.getElementById('snapshotTime').textContent=time;document.getElementById('autoStatus').textContent=localizeAutoStatus(status,time,'auto',lang);document.getElementById('liveNotice').textContent=localizeAutoStatus(status,time,'notice',lang);const badge=document.getElementById('liveBadge');const stale=!!AndroidApp.isSnapshotStale();badge.textContent=translateTextValue(raw?(stale?'DỮ LIỆU CŨ · KHÔNG TRỰC TUYẾN':'DỮ LIỆU ROUTER · ONLINE'):'CHƯA CÓ DỮ LIỆU',lang);badge.style.color=raw?(stale?'#fbbf24':'#4ade80'):'#fbbf24';if(raw){try{const data=JSON.parse(raw);renderData(data);const summary=document.getElementById('snapshotSummary');if(summary){const l=localStorage.getItem('zmm.language')||'vi';summary.textContent=translateTextValue(summary.textContent,l);}document.getElementById('snapshotTime').textContent=time;}catch(e){document.getElementById('snapshotSummary').textContent='Snapshot không đúng định dạng.';}}else{clearRenderedData();document.getElementById('snapshotSummary').textContent=translateTextValue(status|| (url?'Đã kết nối Router nhưng chưa nhận được dữ liệu API.':'Hãy đăng nhập Router để bắt đầu đồng bộ Mesh.'),lang);}}
 
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 const TAB_LABELS={vi:{home:'Tổng quan',mesh:'Sơ đồ kết nối',clients:'Thiết bị',tools:'Công cụ'},en:{home:'Dashboard',mesh:'Topology',clients:'Clients',tools:'Tools'},'zh-CN':{home:'总览',mesh:'网络拓扑',clients:'客户端',tools:'工具'}};
@@ -469,7 +593,7 @@ const UI_TEXT={
 'Tiếp tục →':['Continue →','继续 →'],
 'ZTE HV3601P · IP mặc định':['ZTE HV3601P · Default IP','ZTE HV3601P · 默认 IP'],
 'ZTE F6601P · IP mặc định':['ZTE F6601P · Default IP','ZTE F6601P · 默认 IP'],'Firmware FPT':['FPT firmware','FPT 固件'],'Firmware VT9.3.10P2N7':['VT9.3.10P2N7 firmware','VT9.3.10P2N7 固件'],'IP mặc định:':['Default IP:','默认 IP：'],'✓ Đã hỗ trợ':['✓ Supported','✓ 已支持'],
-'Xin chào 👋':['Hello 👋','你好 👋'],'MẠNG GIA ĐÌNH':['HOME NETWORK','家庭网络'],'Chọn loại Router':['Select Router model','选择路由器型号'],
+'Xin chào 👋':['Hello 👋','你好 👋'],'MẠNG GIA ĐÌNH':['HOME NETWORK','家庭网络'],'Chọn loại Router':['Select Router model','选择路由器型号'],'↻ Khởi động lại Router':['↻ Reboot Router','↻ 重启路由器'],
 'Quản lý hệ thống Mesh ZTE tại địa chỉ Controller':['Manage the ZTE Mesh system at Controller address','管理位于主控制器地址的 ZTE Mesh 网络'],
 'Chưa đọc được từ Router':['Not read from Router','尚未从路由器读取'],'Controller · từ Topology':['Controller · from Topology','主控制器 · 来自网络拓扑'],'Dữ liệu Mesh · từ Topology':['Mesh data · from Topology','Mesh 数据 · 来自网络拓扑'],
 'Chưa đọc được':['Unavailable','无法读取'],'● Chưa đồng bộ':['● Not synchronized','● 尚未同步'],'Dữ liệu Mesh · từ Topology':['Mesh data · from Topology','Mesh 数据 · 来自网络拓扑'],
@@ -480,7 +604,7 @@ const UI_TEXT={
 'Mesh · Access Points từ Router':['Mesh · Access Points from Router','Mesh · 路由器接入点'], 'Chưa có dữ liệu AP.':['No AP data.','暂无 AP 数据。'],
 'Clients · thiết bị đang kết nối':['Clients · connected devices','客户端 · 已连接设备'],'Clients theo từng AP':['Clients by AP','按 AP 查看客户端'],'Tất cả AP':['All APs','所有 AP'],'Mọi kết nối':['All connections','所有连接'],'Mọi chất lượng RSSI':['All RSSI levels','所有 RSSI 信号等级'],'Tên AP / IP':['AP name / IP','AP 名称 / IP'],'Vai trò':['Role','角色'],'Thiết bị đang kết nối':['Connected devices','已连接设备'],'Thiết bị mạng':['Network devices','网络设备'],'Tìm tên, IP hoặc MAC…':['Search name, IP or MAC…','搜索名称、IP 或 MAC…'],'Tất cả băng tần':['All bands','所有频段'],'Tất cả AP':['All APs','所有 AP'],'Mọi kết nối':['All connections','所有连接'],'Wi-Fi':['Wi-Fi','无线网络'],'LAN':['LAN','有线网络'],'Mọi chất lượng RSSI':['All RSSI levels','所有 RSSI 信号等级'],'Tốt (≥ -55 dBm)':['Good (≥ -55 dBm)','良好 (≥ -55 dBm)'],'Trung bình (-67 đến -56 dBm)':['Fair (-67 to -56 dBm)','一般 (-67 至 -56 dBm)'],'Yếu (< -67 dBm)':['Weak (< -67 dBm)','较弱 (< -67 dBm)'],'Chưa có RSSI':['No RSSI','暂无 RSSI'],'Clients theo từng AP':['Clients by AP','按 AP 查看客户端'],'Chưa có dữ liệu Client.':['No Client data.','暂无客户端数据。'],'All AP':['All AP','所有 AP'],'Công cụ':['Tools','工具'],
 'Kết nối Router (Native API)':['Router connection (Native API)','路由器连接（原生 API）'],'Đăng nhập trực tiếp bằng API HTTPS. Dashboard đọc topology và từng node không dùng WebView quản trị.':['Log in directly through the HTTPS API. Dashboard reads topology and each node without the router admin WebView.','通过 HTTPS API 直接登录。Dashboard 通过接口读取网络拓扑和各节点信息，不使用路由器管理 WebView。'],
-'Đăng nhập / quản lý phiên':['Log in / manage session','登录 / 管理会话'],'Cập nhật ngay':['Refresh now','立即刷新'],'Đăng xuất Router':['Log out from Router','退出路由器登录'],'Tự động đồng bộ mỗi 180 giây khi ứng dụng ở foreground.':['Automatically sync every 180 seconds while the app is in the foreground.','应用处于前台时每 180 秒自动同步。'],
+'Đăng nhập / quản lý phiên':['Log in / manage session','登录 / 管理会话'],'Router Information':['Router Information','路由器信息'],'Đăng nhập Router để đọc thông tin thiết bị và hệ thống.':['Log in to read device and system information.','登录以读取设备和系统信息。'],'Chưa có dữ liệu Router Information.':['No Router Information data yet.','暂无路由器信息数据。'],'Router Information không đúng định dạng.':['Router Information has an invalid format.','路由器信息格式无效。'],'Không đọc được Router Information:':['Could not read Router Information:','无法读取路由器信息：'],'Cập nhật':['Refresh','刷新'],'Cập nhật ngay':['Refresh now','立即刷新'],'Đăng xuất Router':['Log out from Router','退出路由器登录'],'Tự động đồng bộ mỗi 180 giây khi ứng dụng ở foreground.':['Automatically sync every 180 seconds while the app is in the foreground.','应用处于前台时每 180 秒自动同步。'],
 'Dự án trên GitHub':['GitHub project','GitHub 项目'],'Theo dõi mã nguồn, cập nhật và các phiên bản mới của ZTE Mesh Manager.':['Follow the source code, updates and new releases of ZTE Mesh Manager.','关注 ZTE Mesh Manager 的源代码、更新和新版本。'],'Mở GitHub ↗':['Open GitHub ↗','打开 GitHub ↗'],'Giao diện / Appearance':['Appearance','外观'],'Chọn giao diện sáng, tối hoặc đen AMOLED.':['Choose light, dark or AMOLED black appearance.','选择浅色、深色或 AMOLED 黑色外观。'],'Sáng / Light':['Light','浅色'],'Tối / Dark':['Dark','深色'],'Đen AMOLED / AMOLED black':['AMOLED black','AMOLED 黑色'],'Ngôn ngữ / Language':['Language','语言'],'Toàn bộ giao diện được dịch; thuật ngữ kỹ thuật giữ nguyên bằng tiếng Anh.':['The entire interface is localized; technical terms remain in English.','整个界面均已本地化；技术术语采用通俗易懂的中文表达。'],'Đang khóa cho đến khi xác minh được lệnh điều khiển an toàn.':['Locked until a safe control command is verified.','在确认控制指令安全之前，此功能保持禁用。'],
 'NODE INFORMATION':['NODE INFORMATION','节点信息'],'Thiết bị đang kết nối':['Connected devices','已连接设备'],'Chưa có dữ liệu chi tiết của Node.':['No detailed data for this Node.','暂无此节点的详细数据。'],'Chọn ngôn ngữ / Select language':['Select language','选择语言'],'Chọn ngôn ngữ cho toàn bộ giao diện. Bạn có thể đổi lại trong Tools.':['Choose the app language. You can change it later in Tools.','请选择应用语言。之后可在“工具”中更改。'],
 'Vai trò':['Role','角色'],'Tên AP / IP':['AP name / IP','AP 名称 / IP'],'Đăng nhập Router để bắt đầu đồng bộ.':['Log in to the Router to start synchronization.','登录路由器以开始同步。'],'Không có Client phù hợp bộ lọc.':['No Clients match the filters.','没有符合筛选条件的客户端。'],'Không có Client đang kết nối.':['No Clients connected.','当前没有客户端连接。'],'Không có thiết bị nào đang kết nối với Node này.':['No devices are connected to this Node.','此节点当前没有设备连接。'],'Chưa có Client đọc được cho AP này.':['No readable Clients for this AP.','此 AP 暂无可读取的客户端。'],'Chưa có dữ liệu AP.':['No AP data.','暂无 AP 数据。'],'Thiết bị':['Device','设备'],'Tốt':['Good','良好'],'Trung bình':['Fair','一般'],'Yếu':['Weak','较弱'],
@@ -496,7 +620,7 @@ const VI_TEXT={
 
 'Connect / log in to Router ↗':'Kết nối / đăng nhập Router ↗',
 
-'NODE INFORMATION':'THÔNG TIN NÚT MẠNG',
+'NODE INFORMATION':'THÔNG TIN NODE',
 'Access Point':'Điểm truy cập',
 'Information not loaded.':'Chưa tải thông tin.',
 'No command sent.':'Chưa gửi lệnh.',

@@ -1,112 +1,148 @@
-# ZTE Mesh Manager v0.7.3
+# ZTE Mesh Manager — v0.8.2
 
-Ứng dụng Android quản lý Router/Mesh ZTE qua Native API HTTPS nội bộ.
+Android application for managing supported ZTE Router/Mesh systems through their native HTTPS APIs. The app reads Router, Topology, Access Point and Client information without using the router's administration WebView for the normal dashboard workflow.
 
-## Trạng thái phiên bản
+## Current release
 
-- **v0.7.3**: sửa bộ đếm tiếng Việt thành `0 Agent`; thêm mục Dự án trên GitHub trong Tools với liên kết mở repository.
+**v0.8.2 · versionCode 82**
 
-- **v0.7.2**: trì hoãn đồng bộ khi quay lại ứng dụng đến đúng hạn chu kỳ; đổi nhãn tiếng Việt Topology thành “Sơ đồ kết nối”.
-- **v0.7.1**: dịch Backhaul/Link Speed/ETH; sửa bản dịch tiếng Anh trong popup chi tiết Node; dịch nhãn Topology ở Dashboard; thêm giao diện Sáng/Tối/Đen AMOLED và lưu lựa chọn.
+### Changes in v0.8.2
+- HV3601P Dashboard header shows the firmware Work Mode label exactly as supplied, e.g. `Controller(Bridge)`; automatic Vietnamese translation is bypassed for this value.
+- AMOLED Black now uses pure black (`#000000`) for the screen background and major UI surfaces to reduce OLED pixel illumination.
+- F6601P behavior and existing router functions remain unchanged.
+- Source package only; build and verify the APK in Android Studio.
 
-- **v0.7.0**: ẩn nút đăng nhập khi đã đăng nhập; nút Đăng xuất chỉ hiện khi có phiên; sửa mô tả ngôn ngữ tiếng Việt; tinh gọn nhãn chọn Router.
-- **v0.6.13**: đồng bộ giao diện hộp thoại native; chu kỳ tự động đồng bộ mặc định 180 giây; phân loại lỗi xác thực F6601P và giữ thông tin đăng nhập khi lỗi sau xác thực.
-- **v0.6.12**: sửa hiển thị Node không có Client; cập nhật trạng thái hỗ trợ F6601P và thông tin firmware trên màn hình chọn Router.
-- **F6601P: ĐÃ HỖ TRỢ** hồ sơ `F6601P_VT9310P2N7` / firmware `VT9.3.10P2N7`.
-- **HV3601P v9.3: ĐÃ HỖ TRỢ** hồ sơ `HV3601P_V93_FPT` / firmware FPT.
-- Chưa có xác nhận kiểm thử đầy đủ tất cả chức năng trên mọi firmware ZTE. Không nên coi hai hồ sơ này tương thích với mọi firmware/model cùng hãng.
+### Changes in v0.7.9.5-beta
+- Fix Topology animated-arrow flicker at the upper-left corner: newly created SVG arrow polygons start hidden and are shown only after a valid position/rotation transform has been calculated.
+- Keep the existing red connector paths, arrow direction, animation timing, Topology layout and observer scheduling.
+- Add a guarded `Reboot Router` action to Tools for both supported profiles (HV3601P v9.3 FPT and F6601P VT9.3.10P2N7).
+- Reboot requires an explicit confirmation dialog warning that Wi-Fi/Internet will be interrupted and that startup may take about 5 minutes.
+- Reboot reads the one-time `_sessionTmpToken` dynamically, then signs the exact URL-encoded form body with the ZTE RSA `Check` header (`Base64(RSA-PKCS1v1.5(SHA-256(body)))`).
+- Sends `POST /?_type=menuData&_tag=devmgr_restartmgr_lua.lua` with `IF_ACTION=Restart`, `Btn_restart` and `_sessionTOKEN`, then validates the Router's XML success response.
+- Reboot confirmation uses the same dark rounded ZTE dialog style as Router selection.
+- No factory-reset action is exposed. Reboot does not clear saved credentials or the existing Mesh snapshot.
+- Source package only; Android APK build and physical-router reboot testing are not verified in this environment.
 
-## Router model và địa chỉ mặc định
+### Changes in v0.7.9.2
+- Add the `Wi-Fi` prefix to wireless Backhaul labels in Dashboard overview and All AP.
+- Add the `Wi-Fi` prefix to client band labels in the Node detail popup and Clients tree: `Wi-Fi 2.4GHz` / `Wi-Fi 5GHz`.
+- Wired Backhaul continues to display as `Cáp LAN`.
+- Existing Node detail popup connection type remains `Wi-Fi 5GHz` / `Wi-Fi 2.4GHz`.
+- Display-only changes; no changes to source API values, parsing, authentication or session handling.
 
-| Model đã chọn | Tên hiển thị | HTTPS mặc định |
+### Changes in v0.7.9.1
+- Correct the Vietnamese Node detail popup heading from `THÔNG TIN NÚT MẠNG` to `THÔNG TIN NODE`.
+- Keep `Agent` and `Node` as English technical terms, as requested.
+- This is a translation/display-only correction. No API, parsing, topology, login/session, or other labels are changed.
+
+### Changes in v0.7.9
+- Node detail popup: clarify the connection-type value. Wireless backhaul is displayed as `Wi-Fi 5GHz` or `Wi-Fi 2.4GHz`; wired backhaul is displayed as `Cáp LAN`.
+- This is a display-only change limited to the **Loại kết nối** field in the Node detail popup. Other Topology cards, All AP, Dashboard, Clients, filters, parsing and API values remain unchanged.
+- Promoted the v0.7.8-beta source baseline to the v0.7.9 release version without changing its Topology connector scheduling/observer logic or Node popup gesture behavior.
+
+## Supported Router profiles
+
+| Selected profile | Firmware/API profile | Default HTTPS address |
 |---|---|---|
-| F6601P | `F6601P` · firmware `VT9.3.10P2N7` | `https://192.168.1.1/` |
-| HV3601P v9.3 | `HV3601P v9.3` · firmware FPT | `https://192.168.1.11/` |
+| HV3601P v9.3 | FPT · `V9.0.10P1_VN2` family | `https://192.168.1.11/` |
+| F6601P | `VT9.3.10P2N7` | `https://192.168.1.1/` |
 
-- Khi đổi model, ứng dụng chỉ tự đổi địa chỉ nếu địa chỉ đang lưu là địa chỉ mặc định của model cũ.
-- Địa chỉ do người dùng tự nhập được giữ nguyên.
-- Dashboard hiển thị tên theo model đã chọn, không gắn cứng HV3601P.
-- Nhãn `Controller Bridge` được đổi thành `Controller mode`; giao diện tiếng Việt hiển thị `Chế độ bộ điều khiển`.
-- F6601P: hỗ trợ đọc danh sách phiên quản trị từ trang xung đột, hiển thị xác nhận trước khi gửi `login_preempt` và đăng nhập lại sau khi Router xác nhận.
-- Mục chọn loại Router trong Tools có bản dịch Tiếng Việt, English và 简体中文.
+Support is confirmed for these tested profiles, not every firmware revision carrying the same model name. When changing Router model, the app changes the address only when the saved address matches the previous model's default; a user-customized address is retained.
 
-## Tính năng chính
+## Main features
 
-- Đăng nhập Router bằng Native API HTTPS.
-- Đọc dữ liệu Mesh/Topology theo API và cấu trúc phản hồi của từng hồ sơ firmware.
-- Hiển thị Controller, Agent, thông tin backhaul/link và Clients khi Router cung cấp dữ liệu tương ứng.
-- Sơ đồ Topology và danh sách Clients.
-- Tìm kiếm/lọc thiết bị.
-- Tự động đồng bộ theo chu kỳ cấu hình (mặc định 180 giây; tùy chỉnh 10–3600 giây). Khi quay lại ứng dụng từ nền, app chỉ đồng bộ nếu chu kỳ đã đến hạn; không tự gọi Router chỉ vì Activity được resume.
-- Giao diện Tiếng Việt, English và 简体中文.
+- Native HTTPS login and session handling for each supported Router profile.
+- Dashboard summary for Controller, Agents, Access Points and Clients.
+- Topology diagram with Controller/Agent hierarchy, backhaul type, Link Speed, RSSI where supplied, client counts and animated directional arrows.
+- Node detail popup with AP information and Client details read from that Node's detail response.
+- Clients view with AP-parent/client-child tree and device search/filter.
+- Router Information in Tools: model, serial, hardware/software/boot versions, manufacturer, CPU, memory and uptime where supplied by firmware.\n- Tools includes a confirmed Reboot Router action for both tested firmware profiles; Factory Reset is intentionally not included.
+- Vietnamese, English and Simplified Chinese interface; technical terms such as Dashboard, Topology, Mesh, Agent, Node, Backhaul and Link Speed are retained where appropriate.
+- Light, Dark and AMOLED themes.
+- Configurable automatic refresh (new installations default to 180 seconds; supported saved preferences are retained).
 
-## Hồ sơ API
+## Node detail popup — connection type display
+
+In the Node detail popup, the field translated as **Loại kết nối** now shows:
+- Wireless backhaul: `Wi-Fi 5GHz` or `Wi-Fi 2.4GHz`.
+- Wired backhaul: `Cáp LAN`.
+
+The change is intentionally scoped to that one popup field. It does not alter the underlying backhaul value or the text shown in other parts of the app.
+
+## Router Information API profiles
 
 ### HV3601P v9.3 FPT
-Giữ nhánh xác thực và parser riêng hiện có. Không dùng parser F6601P để thay thế hồ sơ này.
+- Device information: `menuData/devmgr_statusmgr_lua.lua` → `OBJ_DEVINFO_ID`.
+- CPU, memory and uptime: `menuData/SystemInfo_lua.lua` → `OBJ_CPUINFO_ID`, `OBJ_MEMINFO_ID`, `OBJ_UPTIME_ID`.
+- The Status Manager page is initialized before the XML data requests.
 
 ### F6601P VT9.3.10P2N7
-Dùng luồng đăng nhập và parser riêng. Parser topology xử lý `controllerData` cùng các lớp `agentlay1`–`agentlay8`; quan hệ cha-con dựa trên trường định danh parent của firmware. Cấu trúc JSON của F6601P có thể khác giữa các firmware, vì vậy cần lấy response thực tế từ Router và bổ sung parser tương ứng khi gặp biến thể mới.
+- One data endpoint: `menuData/devmgr_statusmgr_lua.lua`.
+- Device information: `OBJ_DEVINFO_ID`.
+- CPU/memory: `OBJ_CPUMEMUSAGE_ID`.
+- Uptime: `OBJ_POWERONTIME_ID`.
+- The Status Manager page is initialized before reading the XML response.
 
-F6601P được đánh dấu Đã hỗ trợ cho hồ sơ firmware `VT9.3.10P2N7`. Khả năng tương thích với firmware F6601P khác hoặc biến thể API chưa được xác nhận; cần kiểm thử trên Router thực tế, đặc biệt với hệ thống nhiều Agent/Client.
+The two Router profiles use separate parsing paths. A Router Information read failure is best-effort and must not invalidate a successful login or Mesh snapshot. Firmware fields absent from the response are not fabricated as zero values.
 
-## Bảo toàn đăng nhập và phiên
+## Topology connector behavior (inherited from v0.7.8-beta)
 
-- Giữ luồng xác thực/session hiện có của từng model; không gộp hai parser hoặc hai quy trình xác thực.
-- Tự đăng nhập khi mở ứng dụng nếu thông tin đăng nhập đã được lưu và người dùng chưa chủ động đăng xuất.
-- Khi đổi Router, chỉ thay phiên và snapshot đang hoạt động sau khi Router mới xác thực và đọc dữ liệu thành công.
-- Không hard-code session token; token phải lấy từ phản hồi đăng nhập hiện tại.
+- SVG paths are measured only when the Mesh page is active, visible and has a non-zero layout width.
+- Geometry is deferred by two `requestAnimationFrame` callbacks after a render or tab activation so node cards have final positions before connector calculation.
+- `ResizeObserver` watches the rendered tree and node cards; viewport resize remains a debounced fallback.
+- Arrow animation is paused outside the Mesh tab and restarted after returning.
+- The implementation uses actual rendered card positions rather than fixed coordinates or an assumed number of nodes.
 
-## Thiết lập lần đầu
+## Node popup gestures (inherited from v0.7.8-beta)
 
-- Lần đầu cài mới, ứng dụng hiển thị chung một màn hình để chọn ngôn ngữ (mặc định chọn sẵn Tiếng Việt) và loại Router.
-- Chọn HV3601P v9.3 sẽ đặt IP mặc định `https://192.168.1.11/`; chọn F6601P sẽ đặt `https://192.168.1.1/`.
-- Nhấn Tiếp tục để lưu đồng thời ngôn ngữ và model. Các lần mở sau vào Dashboard; có thể đổi ngôn ngữ trong Tools và đổi Router qua chức năng chọn model.
-- Cài đặt hiện có đã lưu model sẽ không bị ép chạy lại màn hình thiết lập ban đầu.
+- Tap a Node card to open its details.
+- Tap the × button to close the popup.
+- Alternatively, when the popup is already scrolled to its top, swipe downward to dismiss it.
+- Swiping upward does not dismiss the popup; normal vertical scrolling within the popup remains available.
 
-## Xung đột phiên quản trị F6601P
+## Login/session safeguards
 
-- Đã bổ sung hàm native `preemptLoginSession(preemptSessionId)` theo request capture: POST `?_type=loginData&_tag=login_preempt`, payload `_type=loginData`, `_tag=login_preempt`, `preempt_sessid` và `action=preempt`; response mong đợi có `login_need_refresh=true`.
-- Khi phát hiện trang xung đột, ứng dụng đọc `preempt_sessid` động và hiển thị danh sách phiên để người dùng chọn; chỉ gửi `login_preempt` sau khi người dùng xác nhận. Hủy thao tác sẽ không thu hồi phiên. Sau khi Router xác nhận preempt, ứng dụng thử đăng nhập lại. Không dùng giá trị session mẫu đã capture làm hằng số.
+- Preserve separate authentication and session flows for HV3601P and F6601P.
+- The app auto-logs in on launch when credentials are saved and the user has not explicitly logged out.
+- F6601P session-conflict handling reads the active session identifier dynamically and requires user confirmation before preempting another administrator session.
+- When switching routers, retain the previous router's authenticated session/snapshot until the new router authenticates successfully.
+- Do not hard-code passwords, cookies, session IDs or tokens. Sensitive values must not be written to diagnostic logs.
+- Network/API errors after authentication must not be misclassified as invalid credentials or erase a valid snapshot.
 
-## Build APK bằng Android Studio
+## Build with Android Studio
 
-1. Giải nén ZIP.
-2. Trong Android Studio, chọn **Open** và mở thư mục gốc có `settings.gradle.kts`.
-3. Chờ Gradle Sync hoàn tất.
-4. Chọn **Build → Build APK(s)**.
-5. Nếu build thất bại, mở cửa sổ **Build Output**, lấy toàn bộ lỗi đầu tiên (không chỉ dòng `Generate APKs`) để kiểm tra.
+1. Extract the source ZIP.
+2. In Android Studio choose **Open** and select the project root containing `settings.gradle.kts`.
+3. Allow Gradle Sync to complete.
+4. Choose **Build → Build APK(s)**.
+5. If the build fails, inspect the first meaningful error in **Build Output** and share that output for diagnosis.
 
-Yêu cầu build hiện tại: Android Gradle Plugin `8.7.3`, Kotlin `2.0.21`, compile SDK `35`, Java/JVM target `17`. Dự án không kèm `gradle-wrapper.jar`; Android Studio cần có Gradle phù hợp hoặc người build cần cấu hình Gradle cục bộ.
+Build configuration: Android Gradle Plugin `8.7.3`, Kotlin `2.0.21`, compile SDK `35`, Java/JVM target `17`. The source package does not include `gradle-wrapper.jar`; Android Studio must have a compatible Gradle installation/configuration.
 
-## Ghi chú kiểm thử
-- v0.6.12: đã sửa logic phân biệt Node có 0 Client (API trả về thành công, số lượng 0) với lỗi đọc dữ liệu hoặc chưa có bản ghi chi tiết.
-- v0.6.12: màn hình chọn Router hiển thị “Đã hỗ trợ” cho cả HV3601P v9.3 firmware FPT và F6601P firmware VT9.3.10P2N7.
+## Verification status
 
-- v0.6.8 sửa lỗi Kotlin compile do `modelKey` được tham chiếu trước khi khai báo trong `AdminActivity.doLogin()`.
-- v0.6.9 thêm màn hình thiết lập ban đầu kết hợp ngôn ngữ + Router và API helper `login_preempt` (chưa tự động hóa do chưa xác định nguồn session ID động).
-- Đã rà soát mã nguồn và cấu trúc gói; chưa thể xác nhận APK build thành công trong môi trường đóng gói này vì không có Android SDK/Gradle đầy đủ.
-- Sau khi build, cần kiểm thử riêng: đăng nhập F6601P, đăng nhập HV3601P, đổi model và IP mặc định, giữ IP tùy chỉnh, đổi ngôn ngữ, Topology có/không có Agent và danh sách Clients.
-
-
-### v0.6.11 note
-F6601P conflict-session handling reuses the same HTTP client/cookie jar from the failed login attempt so the Router conflict page can be read with its active session context. The app still requires explicit user confirmation before preempting another admin session.
-
-### v0.6.12 note
-Node detail now distinguishes a successful response with zero connected Clients from a missing detail record or an API/parser error. The Router selection screen marks both supported profiles and shows their target firmware.
-
-## Giao diện hộp thoại và đồng bộ
-
-- Các hộp thoại native dùng chung phong cách tối màu, bo góc, viền xanh xám và nút nhấn xanh ngọc để đồng bộ với Initial Setup.
-- Chu kỳ đồng bộ mặc định cho cài đặt mới là 180 giây. Giá trị người dùng đã lưu từ phiên bản trước không bị ghi đè; có thể chỉnh trong Dashboard.
-- Với F6601P, thông báo sai tài khoản/mật khẩu chỉ dùng khi phản hồi Router thể hiện dấu hiệu từ chối xác thực. Lỗi mạng, phiên hoặc đọc Topology được hiển thị riêng, không tự động xóa thông tin đăng nhập đã lưu.
-
-## Ghi chú v0.7.0
-
-- Khi Router đã đăng nhập, nút kết nối/đăng nhập được ẩn ở Dashboard và Tools. Đăng xuất trong Tools sẽ làm các nút đăng nhập xuất hiện trở lại.
-- Phần mô tả ngôn ngữ tiếng Việt không còn chứa ký tự/câu tiếng Trung; các thuật ngữ kỹ thuật vẫn giữ bằng tiếng Anh.
-- Bộ chọn Router chỉ hiển thị model và firmware, không kèm nhãn “đang hỗ trợ” hoặc “API riêng”.
+- Router Information: user-confirmed working on HV3601P v9.3 and F6601P `VT9.3.10P2N7` with v0.7.7-beta.
+- v0.7.8-beta Topology connector and popup gesture changes are inherited in this release; the v0.7.9 display-only change has been source-checked.
+- The v0.7.9.2 source has not been built into an APK or tested on a physical device in this environment.
+- Regression-test the **Loại kết nối** field in the Node detail popup on both Router profiles. Also recheck Topology on first entry, tab switching, multi-level Agent layouts, and popup scrolling/dismissal.
 
 ## Repository
 
-- GitHub: https://github.com/baolich2/zte-mesh-manager
+https://github.com/baolich2/zte-mesh-manager
+
+## Router reboot API profiles
+
+Both captured firmware profiles use the same reboot data endpoint:
+- Initialize the reboot page with `GET /?_type=menuView&_tag=rebootAndReset&Menu3Location=0`.
+- Read the latest dynamically generated `_sessionTmpToken` from that page.
+- Build the exact form body `IF_ACTION=Restart&Btn_restart=&_sessionTOKEN=<dynamic token>`.
+- Calculate `Check` as Base64(RSA PKCS#1 v1.5 encryption of the lowercase hexadecimal SHA-256 digest of that exact body).
+- Submit the body to `POST /?_type=menuData&_tag=devmgr_restartmgr_lua.lua` with the `Check` header.
+- Treat the operation as accepted only when the XML response reports `IF_ERRORPARAM=SUCC` and `IF_ERRORTYPE=SUCC`.
+
+The captured request's cookie, SID and session token are examples from one browser session only. The app must use its own authenticated CookieManager and the current page's dynamic token. A successful response means the Router accepted the command; it does not mean the reboot has completed. The device may be unreachable for several minutes.
+
+
+## Post-Reboot recovery (v0.7.9.5-beta)
+After a confirmed Reboot command, the app enters a dedicated recovery state. It pauses normal periodic Mesh refresh, retains saved credentials, marks the previous snapshot stale, and checks the Router every 10 seconds for up to five minutes. When the HTTP service responds, the app creates a fresh ZteApiClient and runs the existing saved-credential login flow, then reads Mesh and Router Information again. Login is retried if the Router's web service is reachable before its login service is fully ready. If recovery times out, the app reports that manual retry is needed and does not erase credentials.
+\n\n### HV3601P Work Mode\nThe app opens the Work Mode page (`menuView`, `mpworkmode`) and reads `CurrentWorkMode` from `OBJ_MAWORKMODE_ID` returned by `multiap_work_mode_lua.lua`. `ShowWorkMode` is used only as a fallback.\n

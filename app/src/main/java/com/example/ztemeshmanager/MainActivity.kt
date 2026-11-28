@@ -27,6 +27,43 @@ class MainActivity : Activity() {
     private val io = Executors.newSingleThreadExecutor()
     @Volatile private var busy = false
     @Volatile private var authInProgress = false
+    @Volatile private var rebootInProgress = false
+    @Volatile private var rebootRecoveryActive = false
+    @Volatile private var rebootRecoveryStartedAt = 0L
+    private val rebootRecoveryPoll = object : Runnable {
+        override fun run() {
+            if (!rebootRecoveryActive || isFinishing) return
+            val elapsed = System.currentTimeMillis() - rebootRecoveryStartedAt
+            if (elapsed >= 5 * 60 * 1000L) {
+                rebootRecoveryActive = false
+                rebootInProgress = false
+                runOnUiThread {
+                    getSharedPreferences("zte", MODE_PRIVATE).edit()
+                        .putString("auto_status", "Router chưa phản hồi sau 5 phút · hãy thử kết nối lại")
+                        .apply()
+                    refreshSnapshotUi()
+                    Toast.makeText(this@MainActivity, "Router chưa phản hồi. Bạn có thể thử kết nối lại.", Toast.LENGTH_LONG).show()
+                }
+                return
+            }
+            io.execute {
+                val prefs = getSharedPreferences("zte", MODE_PRIVATE)
+                val base = prefs.getString("router", RouterDefaults.urlFor(prefs.getString("router_model", RouterDefaults.HV3601P)))
+                    ?: RouterDefaults.urlFor(prefs.getString("router_model", RouterDefaults.HV3601P))
+                val model = prefs.getString("router_model", RouterDefaults.HV3601P) ?: RouterDefaults.HV3601P
+                val reachable = try { ZteApiClient(base, model).isRouterReachable() } catch (_: Exception) { false }
+                if (reachable && rebootRecoveryActive) {
+                    runOnUiThread {
+                        prefs.edit().putString("auto_status", "Router đã hoạt động trở lại · đang đăng nhập và đồng bộ…").apply()
+                        refreshSnapshotUi()
+                        attemptSecureAutoLogin()
+                    }
+                } else if (rebootRecoveryActive) {
+                    handler.postDelayed(this, 10_000L)
+                }
+            }
+        }
+    }
     private fun refreshIntervalMs(): Long {
         val seconds = getSharedPreferences("zte", MODE_PRIVATE)
             .getInt("refresh_interval_seconds", 180).coerceIn(10, 3600)
@@ -35,6 +72,10 @@ class MainActivity : Activity() {
     private val refreshTask = object : Runnable {
         override fun run() {
             if (isFinishing) return
+            if (rebootRecoveryActive) {
+                handler.postDelayed(this, 10_000L)
+                return
+            }
             refreshFromRouter()
             handler.postDelayed(this, refreshIntervalMs())
         }
@@ -127,6 +168,7 @@ class MainActivity : Activity() {
             .remove("snapshot_json")
             .remove("snapshot")
             .remove("snapshot_time")
+            .remove("router_info_json")
             .putBoolean("snapshot_stale", false)
             .putString("auto_status", status)
             .apply()
@@ -139,12 +181,17 @@ class MainActivity : Activity() {
         if (ZteSession.authenticated || authInProgress) return
         val saved = CredentialVault.load(this)
         if (saved == null) {
-            clearSnapshot("Chưa đăng nhập Router")
+            clearSnapshot("Không có thông tin đăng nhập đã lưu · cần đăng nhập thủ công")
+            if (rebootRecoveryActive) {
+                rebootRecoveryActive = false
+                rebootInProgress = false
+            }
             refreshSnapshotUi()
             return
         }
         authInProgress = true
-        clearSnapshot("Đang tự đăng nhập và đồng bộ Router…")
+        var autoLoginSucceeded = false
+        clearSnapshot(if (rebootRecoveryActive) "Router đã phản hồi · đang đăng nhập lại…" else "Đang tự đăng nhập và đồng bộ Router…")
         refreshSnapshotUi()
         val base = getSharedPreferences("zte", MODE_PRIVATE)
             .getString("router", RouterDefaults.urlFor(getSharedPreferences("zte", MODE_PRIVATE).getString("router_model", RouterDefaults.HV3601P)))
@@ -155,11 +202,15 @@ class MainActivity : Activity() {
                 val client = ZteApiClient(base, modelKey)
                 client.login(saved.first, saved.second)
                 val fresh = client.readMesh()
+                val routerInfo = try { client.readRouterInfo() } catch (e: Exception) {
+                    JSONObject().put("error", e.message ?: "Router Information không khả dụng (${e.javaClass.simpleName})")
+                }
                 val prefs = getSharedPreferences("zte", MODE_PRIVATE)
                 val newMac = fresh.optString("controllerMac").uppercase().filter { it.isLetterOrDigit() }
                 val stamp = stamp()
                 prefs.edit()
                     .putString("snapshot_json", fresh.toString())
+                    .putString("router_info_json", routerInfo.toString())
                     .putString("snapshot_time", stamp)
                     .putLong("last_sync_epoch", System.currentTimeMillis())
                     .putString("router_controller_mac", newMac)
@@ -169,6 +220,7 @@ class MainActivity : Activity() {
                 ZteSession.client = client
                 ZteSession.routerUrl = base
                 ZteSession.authenticated = true
+                autoLoginSucceeded = true
             } catch (e: Exception) {
                 ZteSession.authenticated = false
                 ZteSession.client = null
@@ -181,7 +233,21 @@ class MainActivity : Activity() {
                 else "Chưa hoàn tất tự đăng nhập (có thể lỗi phiên/mạng/Topology): $reason")
             } finally {
                 authInProgress = false
-                runOnUiThread { if (!isFinishing) refreshSnapshotUi() }
+                if (rebootRecoveryActive && autoLoginSucceeded) {
+                    rebootRecoveryActive = false
+                    rebootInProgress = false
+                } else if (rebootRecoveryActive) {
+                    handler.postDelayed(rebootRecoveryPoll, 10_000L)
+                }
+                runOnUiThread {
+                    if (!isFinishing) {
+                        refreshSnapshotUi()
+                        if (autoLoginSucceeded && !isFinishing) {
+                            handler.removeCallbacks(refreshTask)
+                            handler.postDelayed(refreshTask, refreshIntervalMs())
+                        }
+                    }
+                }
             }
         }
     }
@@ -198,6 +264,11 @@ class MainActivity : Activity() {
         // another Activity does not itself justify a Router request or a new login.
         // AdminActivity writes last_sync_epoch after its successful login/read, so this
         // also avoids immediately repeating that fresh read when returning from login.
+        if (rebootRecoveryActive) {
+            handler.removeCallbacks(rebootRecoveryPoll)
+            handler.postDelayed(rebootRecoveryPoll, 1_000L)
+            return
+        }
         val interval = refreshIntervalMs()
         val lastSync = prefs.getLong("last_sync_epoch", 0L)
         val elapsed = if (lastSync > 0L) (System.currentTimeMillis() - lastSync).coerceAtLeast(0L) else interval
@@ -238,9 +309,13 @@ class MainActivity : Activity() {
         io.execute {
             try {
                 val data = client.readMesh()
+                val routerInfo = try { client.readRouterInfo() } catch (e: Exception) {
+                    JSONObject().put("error", e.message ?: "Router Information không khả dụng (${e.javaClass.simpleName})")
+                }
                 val stamp = stamp()
                 prefs.edit()
                     .putString("snapshot_json", data.toString())
+                    .putString("router_info_json", routerInfo.toString())
                     .putString("snapshot_time", stamp)
                     .putLong("last_sync_epoch", System.currentTimeMillis())
                     .putString("auto_status", "Online · dữ liệu vừa đồng bộ")
@@ -290,6 +365,8 @@ class MainActivity : Activity() {
             getSharedPreferences("zte", MODE_PRIVATE).getString("snapshot_time", "Chưa có dữ liệu") ?: "Chưa có dữ liệu"
         @JavascriptInterface fun getSnapshotJson(): String =
             getSharedPreferences("zte", MODE_PRIVATE).getString("snapshot_json", "") ?: ""
+        @JavascriptInterface fun getRouterInfoJson(): String =
+            getSharedPreferences("zte", MODE_PRIVATE).getString("router_info_json", "") ?: ""
         @JavascriptInterface fun getAutoStatus(): String =
             getSharedPreferences("zte", MODE_PRIVATE).getString("auto_status", "Chưa đăng nhập Router") ?: "Chưa đăng nhập Router"
         @JavascriptInterface fun getAutoUrl(): String = ZteSession.routerUrl
@@ -330,6 +407,55 @@ class MainActivity : Activity() {
                 handler.postDelayed(refreshTask, refreshIntervalMs())
             }
             return true
+        }
+        @JavascriptInterface fun rebootRouter() {
+            runOnUiThread {
+                if (!ZteSession.authenticated || ZteSession.client == null) {
+                    Toast.makeText(this@MainActivity, "Hãy đăng nhập Router trước khi reboot", Toast.LENGTH_LONG).show()
+                    return@runOnUiThread
+                }
+                if (rebootInProgress) return@runOnUiThread
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Xác nhận Reboot Router")
+                    .setMessage("Bạn có chắc chắn muốn khởi động lại Router này?\n\nWi-Fi và Internet sẽ tạm ngắt. Router thường cần khoảng 5 phút để khởi động lại. Không chọn nếu bạn đang truy cập từ xa và không thể kết nối lại.")
+                    .setNegativeButton("Hủy", null)
+                    .setPositiveButton("Reboot") { _, _ ->
+                        if (rebootInProgress) return@setPositiveButton
+                        val client = ZteSession.client
+                        if (client == null || !ZteSession.authenticated) {
+                            Toast.makeText(this@MainActivity, "Phiên Router không còn hợp lệ", Toast.LENGTH_LONG).show()
+                            return@setPositiveButton
+                        }
+                        rebootInProgress = true
+                        Toast.makeText(this@MainActivity, "Đang gửi lệnh Reboot…", Toast.LENGTH_SHORT).show()
+                        io.execute {
+                            try {
+                                client.rebootRouter()
+                                ZteSession.authenticated = false
+                                ZteSession.client = null
+                                rebootRecoveryActive = true
+                                rebootRecoveryStartedAt = System.currentTimeMillis()
+                                getSharedPreferences("zte", MODE_PRIVATE).edit()
+                                    .putBoolean("snapshot_stale", true)
+                                    .putString("auto_status", "Router đang khởi động lại · tạm dừng đồng bộ…")
+                                    .apply()
+                                runOnUiThread {
+                                    handler.removeCallbacks(refreshTask)
+                                    refreshSnapshotUi()
+                                    Toast.makeText(this@MainActivity, "Router đã nhận lệnh Reboot. App sẽ tự kết nối lại khi Router hoạt động.", Toast.LENGTH_LONG).show()
+                                    handler.postDelayed(rebootRecoveryPoll, 10_000L)
+                                }
+                            } catch (e: Exception) {
+                                runOnUiThread {
+                                    Toast.makeText(this@MainActivity, e.message ?: "Không thể Reboot Router", Toast.LENGTH_LONG).show()
+                                }
+                            } finally {
+                                if (!rebootRecoveryActive) rebootInProgress = false
+                            }
+                        }
+                    }
+                    .showZteStyled()
+            }
         }
         @JavascriptInterface fun refreshNow() { runOnUiThread { refreshFromRouter() } }
         @JavascriptInterface fun logout() {

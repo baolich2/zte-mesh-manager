@@ -171,12 +171,18 @@ class AdminActivity : Activity() {
 
     private fun completeLogin(client: ZteApiClient, base: String, user: String, pass: String, fresh: org.json.JSONObject) {
         val newControllerMac = fresh.optString("controllerMac").uppercase().filter { it.isLetterOrDigit() }
+        // Router Information is best-effort and model-specific; never block a
+        // successful login or Mesh snapshot if this optional API is unavailable.
+        val routerInfo = try { client.readRouterInfo() } catch (e: Exception) {
+            org.json.JSONObject().put("error", e.message ?: "Router Information không khả dụng (${e.javaClass.simpleName})")
+        }
         val prefs = getSharedPreferences("zte", MODE_PRIVATE)
         val oldControllerMac = prefs.getString("router_controller_mac", "")?.uppercase()?.filter { it.isLetterOrDigit() } ?: ""
         val changedSystem = newControllerMac.isNotBlank() && oldControllerMac.isNotBlank() && newControllerMac != oldControllerMac
         val stamp = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
         prefs.edit().putString("router", base).putString("username", user)
             .putString("router_controller_mac", newControllerMac).putString("snapshot_json", fresh.toString())
+            .putString("router_info_json", routerInfo.toString())
             .putString("snapshot_time", stamp).putLong("last_sync_epoch", System.currentTimeMillis())
             .putString("auto_status", if (changedSystem) "Đã chuyển sang hệ Router mới · dữ liệu vừa đồng bộ" else "Đăng nhập thành công · dữ liệu vừa đồng bộ")
             .putBoolean("snapshot_stale", false).apply()
@@ -196,7 +202,7 @@ class AdminActivity : Activity() {
             ZteSession.client = null; ZteSession.authenticated = false
             CredentialVault.clear(this)
             getSharedPreferences("zte", MODE_PRIVATE).edit()
-                .remove("snapshot_json").remove("snapshot").remove("snapshot_time")
+                .remove("snapshot_json").remove("snapshot").remove("snapshot_time").remove("router_info_json")
                 .putBoolean("snapshot_stale", false)
                 .putString("auto_status", "Đã đăng xuất Router")
                 .apply()

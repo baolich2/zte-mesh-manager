@@ -10,8 +10,8 @@ android {
         applicationId = "com.example.ztemeshmanager"
         minSdk = 23
         targetSdk = 35
-        versionCode = 64
-        versionName = "0.7.3"
+        versionCode = 82
+        versionName = "0.8.2"
     }
 
     // Keep Java and Kotlin bytecode targets aligned for Newly's release build.
